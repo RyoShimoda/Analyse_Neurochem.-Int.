@@ -8,7 +8,7 @@ library(PerformanceAnalytics)
 library(readr)
 
 # My Function & ANOVAKUN----
-source("C:\\Users\\sryoh\\Documents\\AUTOGRAPH_ver4.txt")
+source("C:\\Users\\sryoh\\Documents\\AUTOGRAPH.txt")
 source("C:\\Users\\sryoh\\Documents\\anovakun_489.txt")
 
  mf_IHCC_cFos <- function(Folder_name = "", Path, File_type = "csv", 
@@ -73,7 +73,7 @@ source("C:\\Users\\sryoh\\Documents\\anovakun_489.txt")
       dir.create(paste0(Folder_name, "/", Result_folder, "/", Plot_folder, "/", Hist_folder), showWarnings = F)
       
       
-      #Import from AUTOPLOT_ver.2
+      #Import from AUTOPLOT
       #Data retrieval----
       namestmp <- list.files(path = Path,
                              full.names = F,
@@ -1240,12 +1240,12 @@ source("C:\\Users\\sryoh\\Documents\\anovakun_489.txt")
 
 # Contextual Fear Conditioning ----
   # Create Datasets & Plots ----
-    mf_autoplot_ver4(folder_name = "Sampling_after_extinction_day1", 
+    mf_autograph(folder_name = "Sampling_after_extinction_day1", 
                      experiment_type = "FC",
                      path = ".\\Sampling_after_extinction_day1\\FC", 
                      plot_number = "_FC")
 
-    mf_FC_annotation_ver3(folder_name = "Sampling_after_extinction_day1_demo", 
+    mf_FC_annotation(folder_name = "Sampling_after_extinction_day1_demo", 
                           graph = GFC_FC, 
                           y_first_arrow = 25, y_second_arrow = 45, y_third_arrow3 = 65, 
                           legend_posision_y = 65)
@@ -1263,7 +1263,7 @@ source("C:\\Users\\sryoh\\Documents\\anovakun_489.txt")
     
 # Contextual Fear Extinction ----
   # Create Datasets & Plots ----
-    mf_autoplot_ver4(folder_name = "Sampling_after_extinction_day1_demo", 
+    mf_autograph(folder_name = "Sampling_after_extinction_day1_demo", 
                      path = ".\\Sampling_after_extinction_day1_demo\\Ex1", 
                      experiment_type = "Ex1")
     
@@ -1294,7 +1294,7 @@ source("C:\\Users\\sryoh\\Documents\\anovakun_489.txt")
   # Create Datasets & Plots ----
     muscle_list <- c("Soleus", "Plantaris", "Adrenal", "Thymus")
     for (i in muscle_list) {
-      mf_sampling_ver4(folder_name = "Sampling_after_extinction_day1_demo", 
+      mf_sampling(folder_name = "Sampling_after_extinction_day1_demo", 
                        dataset = "Sampling_after_extinction_day1.xlsx", 
                        sampname = i)
     }
