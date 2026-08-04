@@ -167,7 +167,7 @@ source("IHC_cFos.txt")
 # Immunohistochemistry =========================================================
   # My Function
     #Set Working Directory -----
-    setwd("D:\\Soya_lab\\Experimental_Raw_data")
+    setwd("Experimental_Raw_data")
     
     # Create Lists----
     RegionList <- c("dDGsp", "dDGip", "dCA3", "dCA2", "dCA1", "vDGsp", "vDGip", "vCA3", "vCA1")
@@ -175,20 +175,20 @@ source("IHC_cFos.txt")
     RegionListAll <- c("PL", "IL", "dDGsp", "dDGip", "dCA3", "dCA2", "dCA1", "vDGsp", "vDGip", "vCA3", "vCA1")
     
     # Use My Function----
-    mf_IHC_cFos(Folder_name = "Immunohistochemistry_demo\\c-Fos\\Hippocampus",
-                 Path = "D:\\Soya_lab\\Experimental_Raw_data\\Immunohistochemistry_demo\\c-Fos\\Hippocampus\\Analyse_G50_R20",
+    mf_IHC_cFos(Folder_name = "Immunohistochemistry\\c-Fos\\Hippocampus",
+                 Path = ".\\Immunohistochemistry\\c-Fos\\Hippocampus\\Analyse_G50_R20",
                  Region_list = RegionList, Red_name = "c-Fos", Green_name = "NeuN", 
                  Result_folder = "Result_Analyse_G50_R20")
     
-    mf_IHC_cFos(Folder_name = "Immunohistochemistry_demo\\c-Fos\\PL_IL",
-                 Path = "D:\\Soya_lab\\Experimental_Raw_data\\Immunohistochemistry_demo\\c-Fos\\PL_IL\\G40_R20",
+    mf_IHC_cFos(Folder_name = "Immunohistochemistry\\c-Fos\\PL_IL",
+                 Path = ".\\Immunohistochemistry\\c-Fos\\PL_IL\\G40_R20",
                  Region_list = PFCList, Red_name = "c-Fos", Green_name = "NeuN", PFC = "", number_of_region = 2, D_V = "", 
                  Result_folder = "Result_G40_R20", save_plot_width_all = 3, save_plot_width_i = 6, save_plot_height_i = 6,
                  title_size_i = 8, axis_text_size_i = 8, axis_title_size_i = 8, save_histplot_width = 7.5, save_histplot_height = 3,
                  legend_position = c(.8, .9))
     
     # Read KatiKati Data ----
-    kachidata_d4 <- read.csv("Immunohistochemistry_demo\\c-Fos\\Hippocampus\\ForAnalyse.csv", header = F) %>% 
+    kachidata_d4 <- read.csv("Immunohistochemistry\\c-Fos\\Hippocampus\\ForAnalyse.csv", header = F) %>% 
       mutate(Group = ifelse(str_detect(V1, "SED"), "SED", "LIE")) %>% 
       mutate(Region = if_else(str_detect(V1, pattern = "dCA1"), "dCA1",
                               if_else(str_detect(V1, pattern = "dCA2"), "dCA2",
@@ -207,7 +207,7 @@ source("IHC_cFos.txt")
     Kachidata_D4 <- kachidata_d4[order(kachidata_d4$Region),]
     
     # Read GatheringData ----
-    gatheringdata <- read.csv("Immunohistochemistry_demo\\c-Fos\\Hippocampus\\Result_Analyse_G50_R20\\GatheringData.csv")
+    gatheringdata <- read.csv("Immunohistochemistry\\c-Fos\\Hippocampus\\Result_Analyse_G50_R20\\GatheringData.csv")
     Gatheringdata <- gatheringdata[order(gatheringdata$Region),]
     
     # Create Plot Data ----
@@ -415,12 +415,12 @@ source("IHC_cFos.txt")
       
       lmgroup <- g
       assign(paste0("Plot", i), lmgroup, envir = .GlobalEnv)
-      ggsave(paste0("Immunohistochemistry_demo/c-Fos/ScatterResult/", i, ".png"), width = 3.5, height = 3, dpi = 300)
+      ggsave(paste0("Immunohistochemistry/c-Fos/ScatterResult/", i, ".png"), width = 3.5, height = 3, dpi = 300)
       
       modliner <- lm(Freezing ~ PlotX, plotdata)
       predict <- g + geom_abline(intercept = modliner$coefficients[1], slope = modliner$coefficients[2],size = 1)
       assign(paste0("Plot_predict", i), predict, envir = .GlobalEnv)
-      ggsave(paste0("Immunohistochemistry_demo/c-Fos/ScatterResult/All_", i, ".png"), width = 3.5, height = 3, dpi = 300)
+      ggsave(paste0("Immunohistochemistry/c-Fos/ScatterResult/All_", i, ".png"), width = 3.5, height = 3, dpi = 300)
       
     }
     
@@ -432,7 +432,7 @@ source("IHC_cFos.txt")
             axis.text.y = element_text(size = 10),
             axis.title = element_text(size = 8))
     mod_PlotdCA3
-    ggsave("Immunohistochemistry_demo/c-Fos/ScatterResult/dCA3_Ex1.png", width = 4, height = 3, dpi = 300)
+    ggsave("Immunohistochemistry/c-Fos/ScatterResult/dCA3_Ex1.png", width = 4, height = 3, dpi = 300)
     
     #Analyse ==========================================
     # For correlation plot
