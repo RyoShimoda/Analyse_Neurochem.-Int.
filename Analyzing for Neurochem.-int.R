@@ -10,7 +10,7 @@ library(readr)
 # My Function & ANOVAKUN----
 source("AUTOGRAPH.txt")
 source("anovakun_489.txt")
-source("IHCC_cFos.txt")
+source("IHC_cFos.txt")
 
 # Contextual Fear Conditioning ----
   # Create Datasets & Plots ----
@@ -175,12 +175,12 @@ source("IHCC_cFos.txt")
     RegionListAll <- c("PL", "IL", "dDGsp", "dDGip", "dCA3", "dCA2", "dCA1", "vDGsp", "vDGip", "vCA3", "vCA1")
     
     # Use My Function----
-    mf_IHCC_cFos(Folder_name = "Immunohistochemistry_demo\\c-Fos\\Hippocampus",
+    mf_IHC_cFos(Folder_name = "Immunohistochemistry_demo\\c-Fos\\Hippocampus",
                  Path = "D:\\Soya_lab\\Experimental_Raw_data\\Immunohistochemistry_demo\\c-Fos\\Hippocampus\\Analyse_G50_R20",
                  Region_list = RegionList, Red_name = "c-Fos", Green_name = "NeuN", 
                  Result_folder = "Result_Analyse_G50_R20")
     
-    mf_IHCC_cFos(Folder_name = "Immunohistochemistry_demo\\c-Fos\\PL_IL",
+    mf_IHC_cFos(Folder_name = "Immunohistochemistry_demo\\c-Fos\\PL_IL",
                  Path = "D:\\Soya_lab\\Experimental_Raw_data\\Immunohistochemistry_demo\\c-Fos\\PL_IL\\G40_R20",
                  Region_list = PFCList, Red_name = "c-Fos", Green_name = "NeuN", PFC = "", number_of_region = 2, D_V = "", 
                  Result_folder = "Result_G40_R20", save_plot_width_all = 3, save_plot_width_i = 6, save_plot_height_i = 6,
