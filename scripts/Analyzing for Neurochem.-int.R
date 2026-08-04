@@ -166,9 +166,6 @@ source("IHC_cFos.txt")
         
 # Immunohistochemistry =========================================================
   # My Function
-    #Set Working Directory -----
-    setwd("Experimental_Raw_data")
-    
     # Create Lists----
     RegionList <- c("dDGsp", "dDGip", "dCA3", "dCA2", "dCA1", "vDGsp", "vDGip", "vCA3", "vCA1")
     PFCList <- c("PL", "IL")
@@ -385,7 +382,7 @@ source("IHC_cFos.txt")
     
     chart.Correlation(cordata[2:11])
     
-    #ScatterPlot----
+    # ScatterPlot----
 
     for(i in RegionList_DGcomb){
       
@@ -434,7 +431,7 @@ source("IHC_cFos.txt")
     mod_PlotdCA3
     ggsave("Immunohistochemistry/c-Fos/ScatterResult/dCA3_Ex1.png", width = 4, height = 3, dpi = 300)
     
-    #Analyse ==========================================
+    # Analyse ==========================================
     # For correlation plot
     cordataLIE <- cordata %>% 
       filter(Group == "LIE") %>% 
