@@ -40,8 +40,8 @@ setwd("Analyse_Neurochem_int")
     
 # Contextual Fear Extinction ----
   # Create Datasets & Plots ----
-    mf_autograph(folder_name = "Sampling_after_extinction_day1_demo", 
-                     path = ".\\Sampling_after_extinction_day1_demo\\Ex1", 
+    mf_autograph(folder_name = ".", 
+                     path = ".\\Ex1", 
                      experiment_type = "Ex1")
     
   # Statistical Analysis ---- 
@@ -49,7 +49,7 @@ setwd("Analyse_Neurochem_int")
       group_by(No, Group) %>% 
       summarise(Freezing = mean(Freezing))
     
-    sink(file = "Sampling_after_extinction_day1/Result/ANOVA_Ex1.txt", split = T)
+    sink(file = "Results/ANOVA_Ex1.txt", split = T)
     
     anovakun(dataset = sumEx1per3[-1], "AsB",
              Group = c("SED", "LIE"),
@@ -71,7 +71,7 @@ setwd("Analyse_Neurochem_int")
   # Create Datasets & Plots ----
     muscle_list <- c("Soleus", "Plantaris", "Adrenal", "Thymus")
     for (i in muscle_list) {
-      mf_sampling(folder_name = "Sampling_after_extinction_day1_demo", 
+      mf_sampling(folder_name = ".", 
                        dataset = "Sampling_after_extinction_day1.xlsx", 
                        sampname = i)
     }
@@ -84,7 +84,7 @@ setwd("Analyse_Neurochem_int")
       annotate("text", x = 1.5, y = 57, label = "*", size = 6)
     modSoleus
     
-    tiff(filename = "Sampling_after_extinction_day1/Result/Plot/Soleus.tiff", 
+    tiff(filename = "Results/Plot/Soleus.tiff", 
          width = 4 * 900, height = 3.5 * 900, res = 900)
     modSoleus
     dev.off()
@@ -97,7 +97,7 @@ setwd("Analyse_Neurochem_int")
       annotate("text", x = 1.5, y = 127, label = "*", size = 6)
     modPlantaris
     
-    tiff(filename = "Sampling_after_extinction_day1/Result/Plot/Plantaris.tiff", 
+    tiff(filename = "Results/Plot/Plantaris.tiff", 
          width = 4 * 900, height = 3.5 * 900, res = 900)
     modPlantaris
     dev.off()
@@ -109,7 +109,7 @@ setwd("Analyse_Neurochem_int")
       mutate("Adrenal" = Adrenal/Body_weight * 100) %>% 
       mutate("Thymus" = Thymus/Body_weight * 100)
     
-    sink(file = "Sampling_after_extinction_day1/Result/Sampling_ANOVA.txt", split = T)
+    sink(file = "Results/Sampling_ANOVA.txt", split = T)
 
     cat("\n== Body Weight ==\n")
     cat("\n-- Shapiro-Wilk Test --\n")
@@ -175,20 +175,24 @@ setwd("Analyse_Neurochem_int")
     RegionListAll <- c("PL", "IL", "dDGsp", "dDGip", "dCA3", "dCA2", "dCA1", "vDGsp", "vDGip", "vCA3", "vCA1")
     
     # Use My Function----
-    mf_IHC_cFos(Folder_name = "Immunohistochemistry\\c-Fos\\Hippocampus",
-                 Path = ".\\Immunohistochemistry\\c-Fos\\Hippocampus\\Analyse_G50_R20",
-                 Region_list = RegionList, Red_name = "c-Fos", Green_name = "NeuN", 
-                 Result_folder = "Result_Analyse_G50_R20")
+    mf_IHC_cFos(Folder_name = "c-Fos\\Hippocampus",
+                Path = ".\\c-Fos\\Hippocampus\\Analyse_G50_R20",
+                Region_list = RegionList, Red_name = "c-Fos", Green_name = "NeuN", 
+                Result_folder = "Result_Analyse_G50_R20")
     
-    mf_IHC_cFos(Folder_name = "Immunohistochemistry\\c-Fos\\PL_IL",
-                 Path = ".\\Immunohistochemistry\\c-Fos\\PL_IL\\G40_R20",
-                 Region_list = PFCList, Red_name = "c-Fos", Green_name = "NeuN", PFC = "", number_of_region = 2, D_V = "", 
-                 Result_folder = "Result_G40_R20", save_plot_width_all = 3, save_plot_width_i = 6, save_plot_height_i = 6,
-                 title_size_i = 8, axis_text_size_i = 8, axis_title_size_i = 8, save_histplot_width = 7.5, save_histplot_height = 3,
-                 legend_position = c(.8, .9))
+    mf_IHC_cFos(Folder_name = "c-Fos\\PL_IL",
+                Path = ".\\c-Fos\\PL_IL\\G40_R20",
+                Region_list = PFCList, 
+                Red_name = "c-Fos", Green_name = "NeuN", PFC = "", 
+                number_of_region = 2, D_V = "", 
+                Result_folder = "Result_G40_R20", 
+                save_plot_width_all = 3, save_plot_width_i = 6, save_plot_height_i = 6,
+                title_size_i = 8, axis_text_size_i = 8, 
+                axis_title_size_i = 8, save_histplot_width = 7.5, save_histplot_height = 3,
+                legend_position = c(.8, .9))
     
     # Read KatiKati Data ----
-    kachidata_d4 <- read.csv("Immunohistochemistry\\c-Fos\\Hippocampus\\ForAnalyse.csv", header = F) %>% 
+    kachidata_d4 <- read.csv("c-Fos\\Hippocampus\\ForAnalyse.csv", header = F) %>% 
       mutate(Group = ifelse(str_detect(V1, "SED"), "SED", "LIE")) %>% 
       mutate(Region = if_else(str_detect(V1, pattern = "dCA1"), "dCA1",
                               if_else(str_detect(V1, pattern = "dCA2"), "dCA2",
@@ -207,7 +211,7 @@ setwd("Analyse_Neurochem_int")
     Kachidata_D4 <- kachidata_d4[order(kachidata_d4$Region),]
     
     # Read GatheringData ----
-    gatheringdata <- read.csv("Immunohistochemistry\\c-Fos\\Hippocampus\\Result_Analyse_G50_R20\\GatheringData.csv")
+    gatheringdata <- read.csv("c-Fos\\Hippocampus\\Result_Analyse_G50_R20\\GatheringData.csv")
     Gatheringdata <- gatheringdata[order(gatheringdata$Region),]
     
     # Create Plot Data ----
@@ -283,62 +287,61 @@ setwd("Analyse_Neurochem_int")
       mutate(Count = cFos/Area_G * 1000000 / 0.04) %>% 
       filter(Region == "vDG")
     
-    # Read Hippocampus PL/IL Data ----
-    Hippocampus_DGcomb <- plotdata_DGcomb_d4 %>% 
-      dplyr::select(-1) %>% 
-      rename("Count" = "cfos")
-    
-    PFC <- read.csv("Immunohistochemistry\\c-Fos\\PL_IL\\Result_LG10_R20\\GatheringData.csv") %>%
+    # Read PL/IL Data ----
+    PFC <- read.csv("c-Fos\\PL_IL\\Result_G40_R20\\GatheringData.csv") %>%
       dplyr::select(2, 3, 4, 11) %>% 
-      mutate(Count = Count/0.04)
+      mutate(Count = Count/0.04) %>% 
+      mutate(No = gsub("_1_R", "", No)) %>% 
+      rename("cfos" = "Count")
+      
     
     # Create Plot Data ----
-    PlotAllData_DGcomb <- bind_rows(Hippocampus_DGcomb, PFC) %>% 
+    PlotAllData_DGcomb <- bind_rows(plotdata_DGcomb_d4, PFC) %>% 
       mutate(Group = as.factor(Group)) %>% 
       mutate(Group = relevel(Group, ref = "SED"))
     
     PlotSum_DGcomb <- PlotAllData_DGcomb %>% 
       group_by(Group, Region) %>%
-      summarise(meanCount = mean(Count),
-                seCount = sd(Count)/sqrt(n()-1)) %>%
+      summarise(meancfos = mean(cfos),
+                secfos = sd(cfos)/sqrt(n()-1)) %>%
       mutate(Group = as.factor(Group)) %>%
       mutate(Group = relevel(Group, ref = "SED"))
     
     # Create Whole Hippocampus Data ----
-    wholesum <- dvData_d4 %>% 
+    wholesum <- plotdata_DGcomb_d4 %>% 
       group_by(Group) %>% 
       summarise(mean = mean(cfos), 
                 se = sd(cfos)/sqrt(n()-1))
     
-    wholejitter <-dvData_d4 %>% 
+    wholejitter <- plotdata_DGcomb_d4 %>% 
       group_by(No, Group) %>% 
       summarise(mean = mean(cfos))
     
     # Create Whole PL/IL Data ----
     wholePFCsum <- PFC %>% 
       group_by(Group) %>% 
-      summarise(mean = mean(Count), 
-                se = sd(Count)/sqrt(n()-1)) %>% 
+      summarise(mean = mean(cfos), 
+                se = sd(cfos)/sqrt(n()-1)) %>% 
       mutate(Group = as.factor(Group)) %>% 
       mutate(Group = relevel(Group, ref = "SED"))
     
     wholePFCjitter <- PFC %>% 
       group_by(No, Group) %>% 
-      summarise(mean = mean(Count)) %>% 
+      summarise(mean = mean(cfos)) %>% 
       mutate(Group = as.factor(Group)) %>% 
       mutate(Group = relevel(Group, ref = "SED"))
     
     # ALL Region Plot ----
-    PlotAll_DGcomb <- ggplot(PlotSum_DGcomb, aes(x = Region, y = meanCount, fill = Group)) +
+    PlotAll_DGcomb <- ggplot(PlotSum_DGcomb, aes(x = Region, y = meancfos, fill = Group)) +
       geom_bar(stat = 'identity', position = 'dodge', width = .7, colour = "black") + 
-      geom_errorbar(aes(ymin = meanCount - seCount,
-                        ymax = meanCount + seCount),
+      geom_errorbar(aes(ymin = meancfos - secfos,
+                        ymax = meancfos + secfos),
                     width = .2, position = position_dodge(.7)) +
-      geom_jitter(data = PlotAllData_DGcomb, aes(x = Region, y = Count, color = Group),
+      geom_jitter(data = PlotAllData_DGcomb, aes(x = Region, y = cfos, color = Group),
                   size = 1.2, alpha = .7, fill = "black", shape = 21,
                   position = position_jitterdodge(jitter.width = .1, jitter.height = 0)) +
       labs(title = "", y = expression(paste("c-Fos+ / NeuN+ (cell / ", {mm^3},")"))) +
-      scale_y_continuous(expand = c(0, 0), limits = c(0, 60000), breaks = c(0, 10000, 20000, 30000, 40000, 50000, 60000)) + 
+      scale_y_continuous(expand = c(0, 0), limits = c(0, 60000), breaks = seq(0, 60000, by = 10000)) + 
       scale_x_discrete(limits = RegionListAll_DGcomb) +
       scale_color_manual(values = c(SED = "black", LIE = "black")) +
       scale_fill_manual(values = c(SED = "grey85", LIE = "skyblue")) +
