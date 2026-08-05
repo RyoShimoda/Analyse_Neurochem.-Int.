@@ -4,13 +4,14 @@
 library(car)
 library(PerformanceAnalytics)
 
+# Set working directry ----
+setwd("Analyse_Neurochem_int")
+
 # My Function & ANOVAKUN----
 source("scripts/AUTOGRAPH.txt")
 source("scripts/anovakun_489.txt")
 source("scripts/IHC_cFos.txt")
 
-# Set working directry ----
-setwd("Analyse_Neurochem_int")
 
 # Contextual Fear Conditioning ----
   # Create Datasets & Plots ----
@@ -189,7 +190,7 @@ setwd("Analyse_Neurochem_int")
                 legend_position = c(.8, .9))
     
     # Read KatiKati Data ----
-    kachidata_d4 <- read.csv("c-Fos\\Hippocampus\\ForAnalyse.csv", header = F) %>% 
+    kachidata_D4 <- read.csv("c-Fos\\Hippocampus\\ForAnalyse.csv", header = F) %>% 
       mutate(Group = ifelse(str_detect(V1, "SED"), "SED", "LIE")) %>% 
       mutate(Region = if_else(str_detect(V1, pattern = "dCA1"), "dCA1",
                               if_else(str_detect(V1, pattern = "dCA2"), "dCA2",
@@ -203,10 +204,8 @@ setwd("Analyse_Neurochem_int")
       mutate(No = substring(V1 ,1, 6)) %>% 
       rename("cFos" = "V2") %>% 
       group_by(No, Group, Region) %>% 
-      summarise(cFos = sum(cFos))
-    
-    Kachidata_D4 <- kachidata_d4[order(kachidata_d4$Region),]
-    
+      summarise(cFos = sum(cFos)) %>% 
+      arrange(Region)
     
     # Create Plot Data ----
     GData_Hipp <- GatheringData_Hipp %>% 
