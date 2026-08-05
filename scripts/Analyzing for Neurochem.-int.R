@@ -213,6 +213,8 @@ setwd("Analyse_Neurochem_int")
       mutate(Region = as.character(Region)) %>% 
       arrange(Region)
     
+    # ====================== ‚±‚±‚©‚çC³ ===================
+    
     plotdata_d4 <- bind_cols(GData_Hipp, Kachidata_D4) %>% 
       dplyr::select("No...1","Group...2","Region...3","Area_G","cFos") %>%
       rename("No" = "No...1") %>% 
