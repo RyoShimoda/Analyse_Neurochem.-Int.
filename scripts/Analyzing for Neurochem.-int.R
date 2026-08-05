@@ -8,26 +8,29 @@ library(PerformanceAnalytics)
 library(readr)
 
 # My Function & ANOVAKUN----
-source("AUTOGRAPH.txt")
-source("anovakun_489.txt")
-source("IHC_cFos.txt")
+source("scripts/AUTOGRAPH.txt")
+source("scripts/anovakun_489.txt")
+source("scripts/IHC_cFos.txt")
+
+# Set working directry ----
+setwd("Analyse_Neurochem_int")
 
 # Contextual Fear Conditioning ----
   # Create Datasets & Plots ----
-    mf_autograph(folder_name = "Sampling_after_extinction_day1", 
-                     experiment_type = "FC",
-                     path = ".\\Sampling_after_extinction_day1\\FC", 
-                     plot_number = "_FC")
+    mf_autograph(folder_name = ".",
+                 experiment_type = "FC",
+                 path = ".\\FC", 
+                 plot_number = "_FC")
 
-    mf_FC_annotation(folder_name = "Sampling_after_extinction_day1_demo", 
+    mf_FC_annotation(folder_name = ".", 
                           graph = GFC_FC, 
                           y_first_arrow = 25, y_second_arrow = 45, y_third_arrow3 = 65, 
                           legend_posision_y = 65)
     
   # Statistical Analysis ----
-    sink(file = "Sampling_after_extinction_day1/Result/ANOVA_FC.txt", split = T)
+    sink(file = "Results/ANOVA_FC.txt", split = T)
     
-    anovakun(dataset = sumFC[-1],
+    anovakun(dataset = sumFC_FC[-1],
              design = "AsB",
              Group = c("SED", "LIE"),
              Time = TimeFC,
