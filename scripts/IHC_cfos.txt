@@ -1,6 +1,6 @@
 # My Function Immunohistochemistry cFos
 
-mf_IHCC_cFos <- function(Folder_name = "", Path, File_type = "csv", 
+mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv", 
                          Red_name = "RED", Green_name = "GREEN", Blue_name = "BLUE",
                          Area = "Area", Luminance = "Luminance", Red_intensity = "RED intensity", Count = "Count",
                          Region_list, Analyse_color = "R/G", Aim_color = "R",
