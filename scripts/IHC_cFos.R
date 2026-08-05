@@ -90,7 +90,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
       mutate(Region = Region) %>% 
       mutate(Group = if_else(str_detect(No, pattern = "SED"),"SED",
                              if_else(str_detect(No, pattern = "LIE"),"LIE",
-                                     if_else(str_detect(No, pattern = "MOE"),"MOE","NCS")))) %>% 
+                             if_else(str_detect(No, pattern = "MOE"),"MOE","NCS")))) %>% 
       # dplyr::select(4,6,5,1,2,3)
       dplyr::select(2,4,3,1)
   }
@@ -105,7 +105,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
       mutate(Region = Region) %>% 
       mutate(Group = if_else(str_detect(No, pattern = "SED"),"SED",
                              if_else(str_detect(No, pattern = "LIE"),"LIE",
-                                     if_else(str_detect(No, pattern = "MOE"),"MOE","NCS")))) %>% 
+                             if_else(str_detect(No, pattern = "MOE"),"MOE","NCS")))) %>% 
       
       dplyr::select(2,3,4,1)
   }
@@ -122,7 +122,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
       mutate(Region = Region) %>% 
       mutate(Group = if_else(str_detect(No, pattern = "SED"),"SED",
                              if_else(str_detect(No, pattern = "LIE"),"LIE",
-                                     if_else(str_detect(No, pattern = "MOE"),"MOE","NCS")))) %>% 
+                             if_else(str_detect(No, pattern = "MOE"),"MOE","NCS")))) %>% 
       dplyr::select(3,5,4,1,2)
   }
   luminancehistdata <- function(rawdata){
@@ -137,7 +137,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
       mutate(Region = Region) %>% 
       mutate(Group = if_else(str_detect(No, pattern = "SED"),"SED",
                              if_else(str_detect(No, pattern = "LIE"),"LIE",
-                                     if_else(str_detect(No, pattern = "MOE"),"MOE","NCS")))) %>% 
+                             if_else(str_detect(No, pattern = "MOE"),"MOE","NCS")))) %>% 
       dplyr::select(3,4,5,1,2)
   }
   
@@ -389,8 +389,8 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                                LuminancehistRED_5, LuminancehistRED_6) %>% 
         mutate(Group = as.factor(Group)) %>% 
         mutate(Group = relevel(Group, ref = graphic_refference))
-      assign("GatheringData", GatheringData_RG, envir = .GlobalEnv)
-      assign("HistData", HistData_RG, envir = .GlobalEnv)
+      assign("GatheringData_Hipp", GatheringData_RG, envir = .GlobalEnv)
+      assign("HistData_Hipp", HistData_RG, envir = .GlobalEnv)
       write.csv(GatheringData_RG, paste0(Folder_name, "/", Result_folder,"/GatheringData.csv"))
       write.csv(HistData_RG, paste0(Folder_name, "/", Result_folder,"/HistData.csv"))
     }
@@ -566,8 +566,8 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                              LuminancehistRED_5, LuminancehistRED_6, LuminancehistRED_7, LuminancehistRED_8, LuminancehistRED_9) %>% 
       mutate(Group = as.factor(Group)) %>% 
       mutate(Group, relevel(Group, ref = graphic_refference))
-    assign("GatheringData", GatheringData_RG, envir = .GlobalEnv)
-    assign("HistData", HistData_RG, envir = .GlobalEnv)
+    assign("GatheringData_PFC", GatheringData_RG, envir = .GlobalEnv)
+    assign("HistData_PFC", HistData_RG, envir = .GlobalEnv)
     write.csv(GatheringData_RG, paste0(Folder_name, "/", Result_folder,"/GatheringData.csv")) 
     write.csv(HistData_RG, paste0(Folder_name, "/", Result_folder,"/HistData.csv"))
   }
