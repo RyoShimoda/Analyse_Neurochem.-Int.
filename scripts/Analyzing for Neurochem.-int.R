@@ -2,10 +2,7 @@
 
 # Library ----
 library(car)
-library(psych)
-library(ppcor)
 library(PerformanceAnalytics)
-library(readr)
 
 # My Function & ANOVAKUN----
 source("scripts/AUTOGRAPH.txt")
@@ -364,7 +361,7 @@ setwd("Analyse_Neurochem_int")
       annotate("text", x = 7, y = 23000, label = "*", size = 10)
     
     PlotAll_DGcomb  
-    ggsave("Immunohistochemistry\\c-Fos\\PlotAll_ver2_DGcomb.png", width = 9, height = 3, dpi = 300)
+    ggsave("c-Fos\\PlotAll.png", width = 9, height = 3, dpi = 300)
     
     # Correlation ----
     # Create Datasets ----
@@ -380,14 +377,17 @@ setwd("Analyse_Neurochem_int")
       spread(key = Region, value = cfos)
     
     PFC_cor <- PFC %>% 
-      spread(key = Region, value = Count)
+      spread(key = Region, value = cfos)
       
     cordata <- bind_cols(Hippocampus, PFC_cor, Freezing) %>%
       dplyr::select(2, 13, 12, 6, 3, 4, 5, 9, 7, 8, 15) %>%
       rename("Group" = "Group...2")
     
+   
+    png("c-Fos/Chart_Correlation.png", width = 9*300, height = 9*300, res  = 300)
     chart.Correlation(cordata[2:11])
-    
+    dev.off()
+     
     # ScatterPlot----
 
     for(i in RegionList_DGcomb){
