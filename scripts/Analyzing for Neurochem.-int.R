@@ -207,20 +207,20 @@ setwd("Analyse_Neurochem_int")
     
     Kachidata_D4 <- kachidata_d4[order(kachidata_d4$Region),]
     
-    # Read GatheringData ----
-    gatheringdata <- read.csv("c-Fos\\Hippocampus\\Result_Analyse_G50_R20\\GatheringData.csv")
-    Gatheringdata <- gatheringdata[order(gatheringdata$Region),]
     
     # Create Plot Data ----
-    plotdata_d4 <- bind_cols(Gatheringdata, Kachidata_D4) %>% 
-      dplyr::select(14, 3, 4, 6, 17) %>%
-      rename("Group" = "Group...3") %>%
-      rename("No" = "No...14") %>% 
-      rename("Region" = "Region...4") %>% 
-      mutate(cfos = cFos/Area_G * 1000000 / 0.04) %>%
+    GData_Hipp <- GatheringData_Hipp %>% 
+      mutate(Region = as.character(Region)) %>% 
+      arrange(Region)
+    
+    plotdata_d4 <- bind_cols(GData_Hipp, Kachidata_D4) %>% 
+      dplyr::select("No...1","Group...2","Region...3","Area_G","cFos") %>%
+      rename("No" = "No...1") %>% 
+      rename("Group" = "Group...2") %>%
+      rename("Region" = "Region...3") %>% 
+      mutate(cFos_st = cFos/Area_G * 1000000 / 0.04) %>%
       mutate(Group = as.factor(Group)) %>%
-      mutate(Group = relevel(Group, ref = "SED")) %>%
-      dplyr::select(1,2,3,6)
+      mutate(Group = relevel(Group, ref = "SED"))
     
     individualdata_d4 <- plotdata_d4[order(plotdata_d4$No),] %>% 
       mutate(ID = rep(1:16, each = 9))
@@ -231,44 +231,35 @@ setwd("Analyse_Neurochem_int")
     }
     
     # Bind Gatharing Data & KatiKatiData ----
-    summarisedata_d4 <- bind_cols(Gatheringdata, Kachidata_D4) %>%
-      dplyr::select(14, 3, 4, 6, 17) %>%
-      rename("Group" = "Group...3") %>%
-      rename("No" = "No...14") %>% 
-      rename("Region" = "Region...4") %>% 
-      mutate(cfos = cFos/Area_G * 1000000 / 0.04) %>%
+    summarisedata_d4 <- plotdata_d4 %>% 
       group_by(Group, Region) %>%
-      summarise(mean_cfos = mean(cfos),
-                se_cfos = sd(cfos)/sqrt(n()-1)) %>%
+      summarise(mean_cFos = mean(cFos_st),
+                se_cFos = sd(cFos_st)/sqrt(n()-1)) %>%
       mutate(Group = as.factor(Group)) %>%
       mutate(Group = relevel(Group, ref = "SED"))
     
     # Create DG combind Data ----
-    DGdata_d4 <-bind_cols(Gatheringdata, Kachidata_D4) %>% 
-      dplyr::select(14, 3, 4, 6, 17) %>%
-      rename("Group" = "Group...3") %>% 
-      rename("No" = "No...14") %>% 
-      rename("Region" = "Region...4") %>% 
+    DGdata_d4 <- plotdata_d4 %>% 
       filter(str_detect(Region, pattern = "DG")) %>% 
       mutate(DV = if_else(str_detect(Region, pattern = "d"), "Dorsal", "Ventral")) %>% 
       group_by(No, Group, DV) %>% 
       summarise(Area_G = sum(Area_G),
                 cFos = sum(cFos)) %>% 
       mutate(Region = if_else(str_detect(DV, pattern = "Dorsal"), "dDG", "vDG")) %>% 
-      dplyr::select(1,2,6,4,5)
+      dplyr::select("No", "Group", "Region", "Area_G","cFos")
     
     # Create DG Plot Data ----
-    plotdata_DGcomb_d4 <- bind_cols(Gatheringdata, Kachidata_D4) %>% 
-      dplyr::select(14, 3, 4, 6, 17) %>% 
-      rename("Group" = "Group...3") %>%
-      rename("No" = "No...14") %>% 
-      rename("Region" = "Region...4") %>% 
+    plotdata_DGcomb_d4 <-  bind_cols(GData_Hipp, Kachidata_D4) %>% 
+      dplyr::select("No...1","Group...2","Region...3","Area_G","cFos") %>%
+      rename("No" = "No...1") %>% 
+      rename("Group" = "Group...2") %>%
+      rename("Region" = "Region...3") %>% 
       filter(str_detect(Region, pattern = "CA")) %>% 
       bind_rows(DGdata_d4) %>% 
-      mutate(cfos = cFos/Area_G * 1000000 / 0.04) %>% 
+      mutate(cFos_st = cFos/Area_G * 1000000 / 0.04) %>% 
       mutate(Group = as.factor(Group)) %>% 
       mutate(Group = relevel(Group, ref = "SED")) %>% 
-      dplyr::select(1,2,3,6)
+      dplyr::select("No", "Group", "Region", "cFos_st")
     
     
     # Create DG combined List
@@ -277,19 +268,19 @@ setwd("Analyse_Neurochem_int")
     
     # Calculate mm^2 -> mm^3 ----
     DatadDG <- DGdata_d4 %>% 
-      mutate(Count = cFos/Area_G * 1000000 / 0.04) %>% 
+      mutate(cFos_st = cFos/Area_G * 1000000 / 0.04) %>% 
       filter(Region == "dDG")
     
     DatavDG <- DGdata_d4 %>% 
-      mutate(Count = cFos/Area_G * 1000000 / 0.04) %>% 
+      mutate(cFos_st = cFos/Area_G * 1000000 / 0.04) %>% 
       filter(Region == "vDG")
     
     # Read PL/IL Data ----
-    PFC <- read.csv("c-Fos\\PL_IL\\Result_G40_R20\\GatheringData.csv") %>%
-      dplyr::select(2, 3, 4, 11) %>% 
+    PFC <- GatheringData_PFC %>%
+      dplyr::select("No", "Group", "Region", "Count") %>% 
       mutate(Count = Count/0.04) %>% 
       mutate(No = gsub("_1_R", "", No)) %>% 
-      rename("cfos" = "Count")
+      rename("cFos" = "Count")
       
     
     # Create Plot Data ----
@@ -299,42 +290,42 @@ setwd("Analyse_Neurochem_int")
     
     PlotSum_DGcomb <- PlotAllData_DGcomb %>% 
       group_by(Group, Region) %>%
-      summarise(meancfos = mean(cfos),
-                secfos = sd(cfos)/sqrt(n()-1)) %>%
+      summarise(meancFos = mean(cFos),
+                secFos = sd(cFos)/sqrt(n()-1)) %>%
       mutate(Group = as.factor(Group)) %>%
       mutate(Group = relevel(Group, ref = "SED"))
     
     # Create Whole Hippocampus Data ----
     wholesum <- plotdata_DGcomb_d4 %>% 
       group_by(Group) %>% 
-      summarise(mean = mean(cfos), 
-                se = sd(cfos)/sqrt(n()-1))
+      summarise(mean = mean(cFos), 
+                se = sd(cFos)/sqrt(n()-1))
     
     wholejitter <- plotdata_DGcomb_d4 %>% 
       group_by(No, Group) %>% 
-      summarise(mean = mean(cfos))
+      summarise(mean = mean(cFos))
     
     # Create Whole PL/IL Data ----
     wholePFCsum <- PFC %>% 
       group_by(Group) %>% 
-      summarise(mean = mean(cfos), 
-                se = sd(cfos)/sqrt(n()-1)) %>% 
+      summarise(mean = mean(cFos), 
+                se = sd(cFos)/sqrt(n()-1)) %>% 
       mutate(Group = as.factor(Group)) %>% 
       mutate(Group = relevel(Group, ref = "SED"))
     
     wholePFCjitter <- PFC %>% 
       group_by(No, Group) %>% 
-      summarise(mean = mean(cfos)) %>% 
+      summarise(mean = mean(cFos)) %>% 
       mutate(Group = as.factor(Group)) %>% 
       mutate(Group = relevel(Group, ref = "SED"))
     
     # ALL Region Plot ----
-    PlotAll_DGcomb <- ggplot(PlotSum_DGcomb, aes(x = Region, y = meancfos, fill = Group)) +
+    PlotAll_DGcomb <- ggplot(PlotSum_DGcomb, aes(x = Region, y = meancFos, fill = Group)) +
       geom_bar(stat = 'identity', position = 'dodge', width = .7, colour = "black") + 
-      geom_errorbar(aes(ymin = meancfos - secfos,
-                        ymax = meancfos + secfos),
+      geom_errorbar(aes(ymin = meancFos - secFos,
+                        ymax = meancFos + secFos),
                     width = .2, position = position_dodge(.7)) +
-      geom_jitter(data = PlotAllData_DGcomb, aes(x = Region, y = cfos, color = Group),
+      geom_jitter(data = PlotAllData_DGcomb, aes(x = Region, y = cFos, color = Group),
                   size = 1.2, alpha = .7, fill = "black", shape = 21,
                   position = position_jitterdodge(jitter.width = .1, jitter.height = 0)) +
       labs(title = "", y = expression(paste("c-Fos+ / NeuN+ (cell / ", {mm^3},")"))) +
@@ -418,12 +409,12 @@ setwd("Analyse_Neurochem_int")
       
       lmgroup <- g
       assign(paste0("Plot", i), lmgroup, envir = .GlobalEnv)
-      ggsave(paste0("Immunohistochemistry/c-Fos/ScatterResult/", i, ".png"), width = 3.5, height = 3, dpi = 300)
+      ggsave(paste0("c-Fos/ScatterResult/", i, ".png"), width = 3.5, height = 3, dpi = 300)
       
       modliner <- lm(Freezing ~ PlotX, plotdata)
       predict <- g + geom_abline(intercept = modliner$coefficients[1], slope = modliner$coefficients[2],size = 1)
       assign(paste0("Plot_predict", i), predict, envir = .GlobalEnv)
-      ggsave(paste0("Immunohistochemistry/c-Fos/ScatterResult/All_", i, ".png"), width = 3.5, height = 3, dpi = 300)
+      ggsave(paste0("c-Fos/ScatterResult/Lined_", i, ".png"), width = 3.5, height = 3, dpi = 300)
       
     }
     
@@ -435,7 +426,7 @@ setwd("Analyse_Neurochem_int")
             axis.text.y = element_text(size = 10),
             axis.title = element_text(size = 8))
     mod_PlotdCA3
-    ggsave("Immunohistochemistry/c-Fos/ScatterResult/dCA3_Ex1.png", width = 4, height = 3, dpi = 300)
+    ggsave("c-Fos/ScatterResult/Mod_dCA3_Ex1.png", width = 4, height = 3, dpi = 300)
     
     # Analyse ==========================================
     # For correlation plot
@@ -447,7 +438,7 @@ setwd("Analyse_Neurochem_int")
       filter(Group == "SED")%>% 
       dplyr::select(-1)
     
-    sink("Immunohistochemistry/c-Fos/Immunohistochemistry_Analyse.txt", split = T)
+    sink("c-Fos/Immunohistochemistry_Analyse.txt", split = T)
     
     #PFC
     cat("\n== PL ==\n")
