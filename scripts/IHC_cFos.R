@@ -680,7 +680,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                   fill = jitter_fill_color, shape = jitter_shape,
                   position = position_jitterdodge(jitter.width = jitter_width_all, 
                                                   jitter.height = jitter_height_all)) +
-      labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "area (% NeuN"^{"+"}")"))) +
+      labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "area (% NeuN"^{"+"} ~ ")"))) +
       scale_y_continuous(expand = c(0, 0), limits = Arealimits, 
                          breaks = Areabreaks) +
       scale_x_discrete(limits = Region_list) +
