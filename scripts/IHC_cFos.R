@@ -88,9 +88,9 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
       # mutate(RI = as.numeric(RI)) %>% 
       mutate(No = name) %>% 
       mutate(Region = Region) %>% 
-      mutate(Group = if_else(str_detect(No, pattern = "SED"),"SED",
-                             if_else(str_detect(No, pattern = "LIE"),"LIE",
-                             if_else(str_detect(No, pattern = "MOE"),"MOE","NCS")))) %>% 
+      mutate(Group = if_else(str_detect(No, pattern = SED),SED,
+                             if_else(str_detect(No, pattern = LIE),LIE,
+                             if_else(str_detect(No, pattern = MOE),MOE,NCS)))) %>% 
       # dplyr::select(4,6,5,1,2,3)
       dplyr::select(2,4,3,1)
   }
@@ -103,9 +103,9 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
       mutate(Count = as.numeric(Count)) %>% 
       mutate(No = name) %>% 
       mutate(Region = Region) %>% 
-      mutate(Group = if_else(str_detect(No, pattern = "SED"),"SED",
-                             if_else(str_detect(No, pattern = "LIE"),"LIE",
-                             if_else(str_detect(No, pattern = "MOE"),"MOE","NCS")))) %>% 
+      mutate(Group = if_else(str_detect(No, pattern = SED),SED,
+                             if_else(str_detect(No, pattern = LIE),LIE,
+                             if_else(str_detect(No, pattern = MOE),MOE,NCS)))) %>% 
       
       dplyr::select(2,3,4,1)
   }
@@ -120,9 +120,9 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
       mutate(RI = as.numeric(RI)) %>% 
       mutate(No = name) %>% 
       mutate(Region = Region) %>% 
-      mutate(Group = if_else(str_detect(No, pattern = "SED"),"SED",
-                             if_else(str_detect(No, pattern = "LIE"),"LIE",
-                             if_else(str_detect(No, pattern = "MOE"),"MOE","NCS")))) %>% 
+      mutate(Group = if_else(str_detect(No, pattern = SED),SED,
+                             if_else(str_detect(No, pattern = LIE),LIE,
+                             if_else(str_detect(No, pattern = MOE),MOE,NCS)))) %>% 
       dplyr::select(3,5,4,1,2)
   }
   luminancehistdata <- function(rawdata){
@@ -135,9 +135,9 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
       mutate("Luminance Mean" = as.numeric(`Luminance Mean`)) %>% 
       mutate(No = name) %>% 
       mutate(Region = Region) %>% 
-      mutate(Group = if_else(str_detect(No, pattern = "SED"),"SED",
-                             if_else(str_detect(No, pattern = "LIE"),"LIE",
-                             if_else(str_detect(No, pattern = "MOE"),"MOE","NCS")))) %>% 
+      mutate(Group = if_else(str_detect(No, pattern = SED),SED,
+                             if_else(str_detect(No, pattern = LIE),LIE,
+                             if_else(str_detect(No, pattern = MOE),MOE,NCS)))) %>% 
       dplyr::select(3,4,5,1,2)
   }
   
@@ -744,10 +744,10 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
         scale_y_continuous(expand = c(0, 0), limits = Countlimits, 
                            breaks = Countbreaks) + 
         scale_x_discrete(limits = Region_list) +
-        scale_color_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_color_manual(labels = c(SED = SED, LIE = LIE),
                            values = c(SED = jitter_surrounding_color, 
                                       LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
                           values = c(SED = color_SED, LIE = color_LIE)) +
         theme_bar_all()
     }
@@ -767,10 +767,10 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
         scale_y_continuous(expand = c(0, 0), limits = Arealimits, 
                            breaks = Areabreaks) +
         scale_x_discrete(limits = Region_list) +
-        scale_color_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_color_manual(labels = c(SED = SED, LIE = LIE),
                            values = c(SED = jitter_surrounding_color, 
                                       LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
                           values = c(SED = color_SED, LIE = color_LIE)) +
         theme_bar_all()
     }
@@ -790,10 +790,10 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
         scale_y_continuous(expand = c(0, 0), limits = Luminancelimits, 
                            breaks = Luminancebreaks) +
         scale_x_discrete(limits = Region_list) +
-        scale_color_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_color_manual(labels = c(SED = SED, LIE = LIE),
                            values = c(SED = jitter_surrounding_color, 
                                       LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
                           values = c(SED = color_SED, LIE = color_LIE)) +
         theme_bar_all()
     }
@@ -813,10 +813,10 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
         scale_y_continuous(expand = c(0, 0), limits = REDintensitylimits, 
                            breaks = REDintensitybreaks) +
         scale_x_discrete(limits = Region_list) +
-        scale_color_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_color_manual(labels = c(SED = SED, LIE = LIE),
                            values = c(SED = jitter_surrounding_color, 
                                       LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
                           values = c(SED = color_SED, LIE = color_LIE)) +
         theme_bar_all()
     }
@@ -851,10 +851,10 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
         labs(title = titlename, y = expression(paste("c-Fos+ / NeuN+ (cell / ", {mm^2},")"))) +
         scale_y_continuous(expand = c(0, 0), limits = Countlimits, 
                            breaks = Countbreaks) + 
-        scale_color_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_color_manual(labels = c(SED = SED, LIE = LIE),
                            values = c(SED = jitter_surrounding_color, 
                                       LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
                           values = c(SED = color_SED, LIE = color_LIE)) +
         theme_bar_DV()
     }
@@ -873,10 +873,10 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
         labs(title = titlename, y = "c-Fos+ area (% NeuN+)") +
         scale_y_continuous(expand = c(0, 0), limits = Arealimits, 
                            breaks = Areabreaks) +
-        scale_color_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_color_manual(labels = c(SED = SED, LIE = LIE),
                            values = c(SED = jitter_surrounding_color, 
                                       LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
                           values = c(SED = color_SED, LIE = color_LIE)) +
         theme_bar_DV()
     }
@@ -895,10 +895,10 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
         labs(title = titlename, y = "c-Fos+ Luminance\n(Region average)") +
         scale_y_continuous(expand = c(0, 0), limits = Luminancelimits, 
                            breaks = Luminancebreaks) +
-        scale_color_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_color_manual(labels = c(SED = SED, LIE = LIE),
                            values = c(SED = jitter_surrounding_color, 
                                       LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
                           values = c(SED = color_SED, LIE = color_LIE)) +
         theme_bar_DV()
     }
@@ -917,10 +917,10 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
         labs(title = titlename, y = "c-Fos+ intensity (Region average)") +
         scale_y_continuous(expand = c(0, 0), limits = REDintensitylimits, 
                            breaks = REDintensitybreaks) +
-        scale_color_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_color_manual(labels = c(SED = SED, LIE = LIE),
                            values = c(SED = jitter_surrounding_color, 
                                       LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c("SED" = SED, "LIE" = LIE),
+        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
                           values = c(SED = color_SED, LIE = color_LIE)) +
         theme_bar_DV()
     }
