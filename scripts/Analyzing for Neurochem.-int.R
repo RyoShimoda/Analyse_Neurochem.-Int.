@@ -224,7 +224,7 @@ source("scripts/IHC_cFos.txt")
       mutate(Group = as.factor(Group)) %>%
       mutate(Group = relevel(Group, ref = "SED"))
     
-    # Create DG combind Data ----
+    # Create DG combined Data ----
     DGdata_d4 <- plotdata_d4 %>% 
       filter(str_detect(Region, pattern = "DG")) %>% 
       mutate(DV = if_else(str_detect(Region, pattern = "d"), "Dorsal", "Ventral")) %>% 
@@ -233,20 +233,6 @@ source("scripts/IHC_cFos.txt")
                 cFos = sum(cFos)) %>% 
       mutate(Region = if_else(str_detect(DV, pattern = "Dorsal"), "dDG", "vDG")) %>% 
       dplyr::select("No", "Group", "Region", "Area_G","cFos")
-    
-    # Split the DG
-    Data_dDG <- DGdata_d4 %>% 
-      mutate(cFos_st = cFos/Area_G * 1000000 / 0.04) %>% 
-      filter(Region == "dDG")
-    
-    Data_vDG <- DGdata_d4 %>% 
-      mutate(cFos_st = cFos/Area_G * 1000000 / 0.04) %>% 
-      filter(Region == "vDG")
-    
-    # Overwrite Region Data ----
-    for (i in RegionList) {
-      assign(paste0("Data_", i), plotdata_d4[plotdata_d4$Region == i,], envir = .GlobalEnv)
-    }
     
     # Create Plot Data ----
     plotdata_DGcomb_d4 <- plotdata_d4 %>% 
@@ -415,7 +401,7 @@ source("scripts/IHC_cFos.txt")
               legend.key = element_blank(),
               legend.title = element_blank(),
               legend.text = element_text(size = 12),
-              axis.text.x = element_text(size = 10, colour = "black"),
+              axis.text.x = element_text(size = 8, colour = "black"),
               axis.text.y = element_text(size = 10, colour = "black"),
               axis.line = element_line(colour = "black"),
               axis.title.x = element_text(size = 10),
@@ -424,16 +410,16 @@ source("scripts/IHC_cFos.txt")
       if(get_p_value(plotdata, x_var = "PlotX", y_var = "Freezing") < 0.05){
         modliner <- lm(Freezing ~ PlotX, plotdata)
         predict <- g + geom_abline(intercept = modliner$coefficients[1], slope = modliner$coefficients[2],size = 1)
-      ggsave(paste0("c-Fos/ScatterResults/Lined_", i, ".png"), width = 3.5, height = 3, dpi = 300)
+      ggsave(paste0("c-Fos/ScatterResults/Lined_", i, ".png"), width = 4, height = 3, dpi = 300)
       }
       else{
         lmgroup <- g
       assign(paste0("Plot", i), lmgroup, envir = .GlobalEnv)
-      ggsave(paste0("c-Fos/ScatterResults/", i, ".png"), width = 3.5, height = 3, dpi = 300)
+      ggsave(paste0("c-Fos/ScatterResults/", i, ".png"), width = 4, height = 3, dpi = 300)
       }
     }
-  
     
+    # dCA3 Plot
     mod_PlotdCA3 <- Plot_predictdCA3 +
       scale_color_manual(values = c("SED" = "black", "LIE" = "black")) +
       scale_y_continuous(limits = c(59, 100), breaks = seq(60, 100, by = 10)) +
@@ -445,93 +431,82 @@ source("scripts/IHC_cFos.txt")
     ggsave("c-Fos/ScatterResults/Mod_dCA3_Ex1.png", width = 4, height = 3, dpi = 300)
     
     # Analyse ==========================================
-    # For correlation plot
-    cordataLIE <- cordata %>% 
-      filter(Group == "LIE") %>% 
-      dplyr::select(-1)
-    
-    cordataSED <- cordata %>% 
-      filter(Group == "SED")%>% 
-      dplyr::select(-1)
-    
-    
-    
     sink("c-Fos/Immunohistochemistry_Analyse.txt", split = T)
     
     #PFC
     cat("\n== PL ==\n")
     cat("\n-- Shapiro-Wilk Test --\n")
-    shapiro.test(Data_PL$Count)
+    shapiro.test(cordata$PL)
     cat("\n-- Levene's Test --\n")
-    leveneTest(Data_PL$Count, Data_PL$Group)
+    leveneTest(cordata$PL, cordata$Group)
     cat("\n-- unpaired t Test --\n")
-    t.test(Data_PL$Count ~ Data_PL$Group, var.equal = TRUE)
+    t.test(cordata$PL ~ cordata$Group, var.equal = TRUE)
     
     cat("\n== IL ==\n")
     cat("\n-- Shapiro-Wilk Test --\n")
-    shapiro.test(Data_IL$Count)
+    shapiro.test(cordata$IL)
     cat("\n-- Levene's Test --\n")
-    leveneTest(Data_IL$Count, Data_IL$Group)
+    leveneTest(cordata$IL, cordata$Group)
     cat("\n-- unpaired t Test --\n")
-    t.test(Data_IL$Count ~ Data_IL$Group, var.equal = TRUE)
+    t.test(cordata$IL ~ cordata$Group, var.equal = TRUE)
     
     #Hippocampus
     
     cat("\n== dDG ==\n")
     cat("\n-- Shapiro-Wilk Test --\n")
-    shapiro.test(DatadDG$Count)
+    shapiro.test(cordata$dDG)
     cat("\n-- Levene's Test --\n")
-    leveneTest(DatadDG$Count, DatadDG$Group)
+    leveneTest(cordata$dDG, cordata$Group)
     cat("\n-- unpaired t Test --\n")
-    t.test(DatadDG$Count ~ DatadDG$Group, var.equal = TRUE)
+    t.test(cordata$dDG ~ cordata$Group, var.equal = TRUE)
     
     cat("\n== vDG ==\n")
     cat("\n-- Shapiro-Wilk Test --\n")
-    shapiro.test(DatavDG$cFos_st)
+    shapiro.test(cordata$vDG)
     cat("\n-- Levene's Test --\n")
-    leveneTest(DatavDG$cFos_st, DatavDG$Group)
+    leveneTest(cordata$vDG, cordata$Group)
     cat("\n-- unpaired t Test --\n")
-    t.test(DatavDG$cFos_st ~ DatavDG$Group, var.equal = TRUE)
+    t.test(cordata$vDG ~ cordata$Group, var.equal = TRUE)
     
     cat("\n== dCA3 ==\n")
     cat("\n-- Shapiro-Wilk Test --\n")
-    shapiro.test(Data_dCA3$cFos_st)
+    shapiro.test(cordata$dCA3)
     cat("\n-- Levene's Test --\n")
-    leveneTest(Data_dCA3$cFos_st, Data_dCA3$Group)
+    leveneTest(cordata$dCA3, cordata$Group)
     cat("\n-- unpaired t Test --\n")
-    t.test(Data_dCA3$cFos_st ~ Data_dCA3$Group, var.equal = TRUE)
+    t.test(cordata$dCA3 ~ cordata$Group, var.equal = TRUE)
     
     cat("\n== dCA2 ==\n")
     cat("\n-- Shapiro-Wilk Test --\n")
-    shapiro.test(Data_dCA3$cFos_st)
+    shapiro.test(cordata$dCA2)
     cat("\n-- Levene's Test --\n")
-    leveneTest(Data_dCA2$cFos_st, Data_dCA2$Group)
+    leveneTest(cordata$dCA2, cordata$Group)
     cat("\n-- unpaired t Test --\n")
-    t.test(Data_dCA2$cFos_st ~ Data_dCA2$Group, var.equal = TRUE)
+    t.test(cordata$dCA2 ~ cordata$Group, var.equal = TRUE)
     
     cat("\n== dCA1 ==\n")
     cat("\n-- Shapiro-Wilk Test --\n")
-    shapiro.test(Data_dCA1$cFos_st)
+    shapiro.test(cordata$dCA1)
     cat("\n-- Levene's Test --\n")
-    leveneTest(Data_dCA1$cFos_st, Data_dCA1$Group)
+    leveneTest(cordata$dCA1, cordata$Group)
     cat("\n-- unpaired t Test --\n")
-    t.test(Data_dCA1$cFos_st ~ Data_dCA1$Group, var.equal = TRUE)
+    t.test(cordata$dCA1 ~ cordata$Group, var.equal = TRUE)
     
     cat("\n== vCA3 ==\n")
     cat("\n-- Shapiro-Wilk Test--\n")
-    shapiro.test(Data_vCA3$cFos_st)
+    shapiro.test(cordata$vCA3)
     cat("\n-- Levene's Test --\n")
-    leveneTest(Data_vCA3$cFos_st, Data_vCA3$Group)
+    leveneTest(cordata$vCA3, cordata$Group)
     cat("\n-- unpaired t Test --\n")
-    t.test(Data_vCA3$cFos_st ~ Data_vCA3$Group, var.equal = TRUE)
+    t.test(cordata$vCA3 ~ cordata$Group, var.equal = TRUE)
     
     cat("\n== vCA1 ==\n")
     cat("\n-- Shapiro-Wilk Test --\n")
-    shapiro.test(Data_vCA1$cFos_st)
+    shapiro.test(cordata$vCA1)
     cat("\n-- Levene's Test --\n")
-    leveneTest(Data_vCA1$cFos_st, Data_vCA1$Group)
+    leveneTest(cordata$vCA1, cordata$Group)
     cat("\n-- unpaired t Test --\n")
-    t.test(Data_vCA1$cFos_st ~ Data_vCA1$Group, var.equal = TRUE)
+    t.test(cordata$vCA1 ~ cordata$Group, var.equal = TRUE)
     
     cat("\n== Correlation ==\n")
     cat("\n-- dCA3 & Freezing Time --\n")
