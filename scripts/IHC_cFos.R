@@ -862,7 +862,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                geom_bar(stat = 'identity', position = barplot_posision, 
                         width = barplot_width, colour = barplot_surrounding_color) + 
                labs(title = paste0(gsub("_1_R", "", dataset$No)," ", titlename), 
-                    y = bquote(paste("c-Fos"^{"+"} ~ "area (% NeuN"^{"+"}")"))) +
+                    y = bquote(paste("c-Fos"^{"+"} ~ "area (% NeuN"^{"+"} ~ ")"))) +
                scale_y_continuous(expand = c(0, 0), limits = Arealimits, 
                                   breaks = Areabreaks) +
                scale_x_discrete(limits = Region_list) +
