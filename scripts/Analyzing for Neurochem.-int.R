@@ -190,7 +190,7 @@ source("scripts/IHC_cFos.txt")
                 legend_position = c(.8, .9))
     
     # Read KatiKati Data ----
-    kachidata_D4 <- read.csv("c-Fos\\Hippocampus\\ForAnalyse.csv", header = F) %>% 
+    Kachidata_D4 <- read.csv("c-Fos\\Hippocampus\\ForAnalyse.csv", header = F) %>% 
       mutate(Group = ifelse(str_detect(V1, "SED"), "SED", "LIE")) %>% 
       mutate(Region = if_else(str_detect(V1, pattern = "dCA1"), "dCA1",
                               if_else(str_detect(V1, pattern = "dCA2"), "dCA2",
@@ -210,32 +210,17 @@ source("scripts/IHC_cFos.txt")
     # Create Plot Data ----
     GData_Hipp <- GatheringData_Hipp %>% 
       mutate(Region = as.character(Region)) %>% 
+      mutate(No = substring(No, 1, 6)) %>% 
       arrange(Region)
     
-    # ====================== Ç±Ç±Ç©ÇÁèCê≥ ===================
-    
-    plotdata_d4 <- bind_cols(GData_Hipp, Kachidata_D4) %>% 
-      dplyr::select("No...1","Group...2","Region...3","Area_G","cFos") %>%
+    plotdata_d4 <- bind_cols(GData_Hipp, Kachidata_D4) %>%
+      # Checking rows and columns 
+      dplyr::select("No...1", "No...13","Group...2", "Group...14","Region...3", "Region...15","Area_G","cFos") %>%
+      dplyr::select("No...1", "Group...2", "Region...3", "Area_G", "cFos") %>% 
       rename("No" = "No...1") %>% 
       rename("Group" = "Group...2") %>%
       rename("Region" = "Region...3") %>% 
       mutate(cFos_st = cFos/Area_G * 1000000 / 0.04) %>%
-      mutate(Group = as.factor(Group)) %>%
-      mutate(Group = relevel(Group, ref = "SED"))
-    
-    individualdata_d4 <- plotdata_d4[order(plotdata_d4$No),] %>% 
-      mutate(ID = rep(1:16, each = 9))
-    
-    # Create Region Data ----
-    for (i in RegionList) {
-      assign(paste0("Data_", i), plotdata_d4[plotdata_d4$Region == i,], envir = .GlobalEnv )
-    }
-    
-    # Bind Gatharing Data & KatiKatiData ----
-    summarisedata_d4 <- plotdata_d4 %>% 
-      group_by(Group, Region) %>%
-      summarise(mean_cFos = mean(cFos_st),
-                se_cFos = sd(cFos_st)/sqrt(n()-1)) %>%
       mutate(Group = as.factor(Group)) %>%
       mutate(Group = relevel(Group, ref = "SED"))
     
@@ -249,12 +234,13 @@ source("scripts/IHC_cFos.txt")
       mutate(Region = if_else(str_detect(DV, pattern = "Dorsal"), "dDG", "vDG")) %>% 
       dplyr::select("No", "Group", "Region", "Area_G","cFos")
     
-    # Create DG Plot Data ----
-    plotdata_DGcomb_d4 <-  bind_cols(GData_Hipp, Kachidata_D4) %>% 
-      dplyr::select("No...1","Group...2","Region...3","Area_G","cFos") %>%
-      rename("No" = "No...1") %>% 
-      rename("Group" = "Group...2") %>%
-      rename("Region" = "Region...3") %>% 
+    # Overwrite Region Data ----
+    for (i in RegionList) {
+      assign(paste0("Data_", i), plotdata_d4[plotdata_d4$Region == i,], envir = .GlobalEnv)
+    }
+    
+    # Create Plot Data ----
+    plotdata_DGcomb_d4 <- plotdata_d4 %>% 
       filter(str_detect(Region, pattern = "CA")) %>% 
       bind_rows(DGdata_d4) %>% 
       mutate(cFos_st = cFos/Area_G * 1000000 / 0.04) %>% 
@@ -279,59 +265,37 @@ source("scripts/IHC_cFos.txt")
     # Read PL/IL Data ----
     PFC <- GatheringData_PFC %>%
       dplyr::select("No", "Group", "Region", "Count") %>% 
-      mutate(Count = Count/0.04) %>% 
+      mutate(cFos_st = Count/0.04) %>% 
       mutate(No = gsub("_1_R", "", No)) %>% 
-      rename("cFos" = "Count")
-      
+      dplyr::select(-"Count")
     
     # Create Plot Data ----
-    PlotAllData_DGcomb <- bind_rows(plotdata_DGcomb_d4, PFC) %>% 
-      mutate(Group = as.factor(Group)) %>% 
-      mutate(Group = relevel(Group, ref = "SED"))
-    
-    PlotSum_DGcomb <- PlotAllData_DGcomb %>% 
+    sumHipp_DGcomb <- plotdata_DGcomb_d4 %>% 
       group_by(Group, Region) %>%
-      summarise(meancFos = mean(cFos),
-                secFos = sd(cFos)/sqrt(n()-1)) %>%
+      summarise(meancFos = mean(cFos_st),
+                secFos = sd(cFos_st)/sqrt(n()-1)) %>%
       mutate(Group = as.factor(Group)) %>%
       mutate(Group = relevel(Group, ref = "SED"))
     
-    # Create Whole Hippocampus Data ----
-    wholesum <- plotdata_DGcomb_d4 %>% 
-      group_by(Group) %>% 
-      summarise(mean = mean(cFos), 
-                se = sd(cFos)/sqrt(n()-1))
-    
-    wholejitter <- plotdata_DGcomb_d4 %>% 
-      group_by(No, Group) %>% 
-      summarise(mean = mean(cFos))
-    
-    # Create Whole PL/IL Data ----
-    wholePFCsum <- PFC %>% 
-      group_by(Group) %>% 
-      summarise(mean = mean(cFos), 
-                se = sd(cFos)/sqrt(n()-1)) %>% 
+    sumPFC <- PFC %>% 
+      group_by(Group, Region) %>% 
+      summarise(meancFos = mean(cFos_st),
+                secFos = sd(cFos_st)/sqrt(n()-1)) %>% 
       mutate(Group = as.factor(Group)) %>% 
       mutate(Group = relevel(Group, ref = "SED"))
     
-    wholePFCjitter <- PFC %>% 
-      group_by(No, Group) %>% 
-      summarise(mean = mean(cFos)) %>% 
-      mutate(Group = as.factor(Group)) %>% 
-      mutate(Group = relevel(Group, ref = "SED"))
-    
-    # ALL Region Plot ----
-    PlotAll_DGcomb <- ggplot(PlotSum_DGcomb, aes(x = Region, y = meancFos, fill = Group)) +
+    #  Hippocampus Plot ----
+    PlotHipp_DGcomb <- ggplot(sumHipp_DGcomb, aes(x = Region, y = meancFos, fill = Group)) +
       geom_bar(stat = 'identity', position = 'dodge', width = .7, colour = "black") + 
       geom_errorbar(aes(ymin = meancFos - secFos,
                         ymax = meancFos + secFos),
                     width = .2, position = position_dodge(.7)) +
-      geom_jitter(data = PlotAllData_DGcomb, aes(x = Region, y = cFos, color = Group),
+      geom_jitter(data = plotdata_DGcomb_d4, aes(x = Region, y = cFos_st, color = Group),
                   size = 1.2, alpha = .7, fill = "black", shape = 21,
                   position = position_jitterdodge(jitter.width = .1, jitter.height = 0)) +
-      labs(title = "", y = expression(paste("c-Fos+ / NeuN+ (cell / ", {mm^3},")"))) +
+      labs(title = "", y = bquote(paste("c-Fos"^{"+"} ~ "&" ~ "NeuN"^{"+"} ~ "/" ~ "NeuN"^{"+"} ~ " (# /" ~ mm^3 ~")"))) +
       scale_y_continuous(expand = c(0, 0), limits = c(0, 60000), breaks = seq(0, 60000, by = 10000)) + 
-      scale_x_discrete(limits = RegionListAll_DGcomb) +
+      scale_x_discrete(limits = RegionList_DGcomb) +
       scale_color_manual(values = c(SED = "black", LIE = "black")) +
       scale_fill_manual(values = c(SED = "grey85", LIE = "skyblue")) +
       theme_classic(base_family = "TNR") +
@@ -346,14 +310,45 @@ source("scripts/IHC_cFos.txt")
         axis.title.x = element_blank(),
         axis.title.y = element_text(size = 10)) +
       #dCA3
-      annotate("path", x = c(3.8,3.8,4.2,4.2), y = c(18000,20000,20000,15000)) +
-      annotate("text", x = 4, y = 21000, label = "*", size = 10) +
+      annotate("path", x = c(1.8,1.8,2.2,2.2), y = c(18000,20000,20000,15000)) +
+      annotate("text", x = 2, y = 21000, label = "*", size = 10) +
       #vDG
-      annotate("path", x = c(6.8,6.8,7.2,7.2), y = c(20000,22000,22000,17000)) +
-      annotate("text", x = 7, y = 23000, label = "*", size = 10)
+      annotate("path", x = c(4.8,4.8,5.2,5.2), y = c(20000,22000,22000,17000)) +
+      annotate("text", x = 5, y = 23000, label = "*", size = 10)
     
-    PlotAll_DGcomb  
-    ggsave("c-Fos\\PlotAll.png", width = 9, height = 3, dpi = 300)
+    PlotHipp_DGcomb
+    
+    ggsave("c-Fos\\Plot_Hippocampus.png", width = 7, height = 3, dpi = 300)
+    
+    # PFC Plot ----
+    PlotPFC <- ggplot(sumPFC, aes(x = Region, y = meancFos, fill = Group)) +
+      geom_bar(stat = 'identity', position = 'dodge', width = .7, colour = "black") + 
+      geom_errorbar(aes(ymin = meancFos - secFos,
+                        ymax = meancFos + secFos),
+                    width = .2, position = position_dodge(.7)) +
+      geom_jitter(data = PFC, aes(x = Region, y = cFos_st, color = Group),
+                  size = 1.2, alpha = .7, fill = "black", shape = 21,
+                  position = position_jitterdodge(jitter.width = .1, jitter.height = 0)) +
+      labs(title = "", y = bquote(paste("c-Fos"^{"+"} ~ "/ area" ~ "(# /" ~ mm^3 ~")"))) +
+      scale_y_continuous(expand = c(0, 0), limits = c(0, 80000), breaks = seq(0, 80000, by = 20000)) + 
+      scale_x_discrete(limits = PFCList) +
+      scale_color_manual(values = c(SED = "black", LIE = "black")) +
+      scale_fill_manual(values = c(SED = "grey85", LIE = "skyblue")) +
+      theme_classic(base_family = "TNR") +
+      theme(
+        legend.position = c(.9, 1),
+        legend.key = element_blank(),
+        legend.title = element_blank(),
+        legend.text = element_text(size = 10),
+        axis.text.x = element_text(size = 12, colour = "black"),
+        axis.text.y = element_text(size = 10, colour = "black"),
+        axis.line = element_line(colour = "black"),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size = 10)) 
+    
+    PlotPFC
+    ggsave("c-Fos\\Plot_PFC.png", width = 3, height = 3, dpi = 300)
+    
     
     # Correlation ----
     # Create Datasets ----
