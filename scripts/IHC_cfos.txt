@@ -579,7 +579,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
     write.csv(HistData_RG, paste0(Folder_name, "/", Result_folder,"/HistData.csv"))
   }
   
-  #Plot----
+  #Plot ----
   if(Font_family == "Times New Roman"){
     Font = "TNR"
   }
@@ -667,6 +667,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                                     LIE = jitter_surrounding_color)) +
       scale_fill_manual(labels = c(SED = SED, LIE = LIE),
                         values = c(SED = color_SED, LIE = color_LIE))
+    return(g)
   }
   PlotArea <- function(dataset, datajitter, purpose, titlename){
     g <- ggplot(dataset, aes(x = Region, y = meanArea, fill = Group)) +
@@ -689,6 +690,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                                     LIE = jitter_surrounding_color)) +
       scale_fill_manual(labels = c(SED = SED, LIE = LIE),
                         values = c(SED = color_SED, LIE = color_LIE))
+    return(g)
   }
   PlotLuminance <- function(dataset, datajitter, purpose, titlename){
     g <- ggplot(dataset, aes(x = Region, y = meanLI, fill = Group)) +
@@ -711,6 +713,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                                     LIE = jitter_surrounding_color)) +
       scale_fill_manual(labels = c(SED = SED, LIE = LIE),
                         values = c(SED = color_SED, LIE = color_LIE))
+    return(g)
   }
   PlotRed_intensity <- function(dataset, datajitter, purpose, titlename){
     g <- ggplot(dataset, aes(x = Region, y = meanRI, fill = Group)) +
@@ -733,6 +736,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                                     LIE = jitter_surrounding_color)) +
       scale_fill_manual(labels = c(SED = SED, LIE = LIE),
                         values = c(SED = color_SED, LIE = color_LIE))
+    return(g)
   }
   
   Barplot <- function(dataset, datajitter, purpose, region, titlename){
