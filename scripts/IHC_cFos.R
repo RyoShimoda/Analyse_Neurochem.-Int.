@@ -371,8 +371,9 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
         mutate(Region = as.factor(Region)) %>%
         mutate(No = as.factor(No)) %>% 
         mutate(Group = relevel(Group, ref = graphic_refference)) %>% 
-        # dplyr::select(1, 2, 3, 33, 34, 35, 36, 37, 38, 39, 40, 41)
-        dplyr::select(1, 2, 3, 35, 36, 37, 38, 39, 40, 41, 42, 43)
+        dplyr::select("No", "Group", "Region", 
+                      "Area_R", "Area_G", "Count_R", 
+                      "LI_R", "RI_R", "LI", "RI", "Area", "Count")
     }
     
     if(Analyse_color == "R/G"){
@@ -443,10 +444,10 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
             mutate(Count_R = (Count...28 + Count...32 + Count...36)) %>% 
             mutate(LI_R = (LI...40 + LI...45 + LI...50)) %>% 
             mutate(RI_R = (RI...41 + RI...46 + RI...51)) %>% 
-            mutate(Area = (Area_R/Area_G)*100) %>%
-            mutate(Count = (Count_R/Area_G)* 1000000) %>% 
             mutate(LI = (LI_R/3)) %>% 
             mutate(RI = (RI_R/3)) %>%
+            mutate(Area = (Area_R/Area_G)*100) %>%
+            mutate(Count = (Count_R/Area_G)* 1000000) %>% 
             rename("No" = "No...1") %>% 
             rename("Group" = "Group...2") %>% 
             rename("Region" = "Region...3") %>% 
@@ -454,7 +455,9 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
             mutate(Region = as.factor(Region)) %>%
             mutate(No = as.factor(No)) %>% 
             mutate(Group = relevel(Group, ref = graphic_refference)) %>% 
-            dplyr::select(1, 2, 3, 52, 53, 54, 55, 56, 57, 58, 59, 60)
+            dplyr::select("No", "Group", "Region", 
+                          "Area_R", "Area_G", "Count_R", 
+                          "LI_R", "RI_R", "LI", "RI", "Area", "Count")
         }
         
         GatheringData_IL <- GatheringData(Data1 = RED_1, Data2 = RED_2, Data3 = RED_3,
@@ -537,10 +540,10 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
             mutate(Count_R = (Count...52 + Count...56 + Count...60 + Count...64 + Count...68 + Count...72)) %>% 
             mutate(LI_R = (LI...76 + LI...81 + LI...86 + LI...91 + LI...96 + LI...101)) %>% 
             mutate(RI_R = (RI...77 + RI...82 + RI...87 + RI...92 + RI...97 + RI...102)) %>% 
-            mutate(Area = (Area_R/Area_G)*100) %>%
-            mutate(Count = (Count_R/Area_G)* 1000000) %>% 
             mutate(LI = (LI_R/6)) %>% 
             mutate(RI = (RI_R/6)) %>%
+            mutate(Area = (Area_R/Area_G)*100) %>%
+            mutate(Count = (Count_R/Area_G)* 1000000) %>% 
             rename("No" = "No...1") %>% 
             rename("Group" = "Group...2") %>% 
             rename("Region" = "Region...3") %>% 
@@ -548,7 +551,9 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
             mutate(Region = as.factor(Region)) %>%
             mutate(No = as.factor(No)) %>% 
             mutate(Group = relevel(Group, ref = graphic_refference)) %>% 
-            dplyr::select(1, 2, 3, 103, 104, 105, 106, 107, 108, 109, 110, 111)
+            dplyr::select("No", "Group", "Region", 
+                          "Area_R", "Area_G", "Count_R", 
+                          "LI_R", "RI_R", "LI", "RI", "Area", "Count")
         }
         
         GatheringData_PL <- GatheringData(Data1 = RED_4, Data2 = RED_5, Data3 = RED_6, Data4 = RED_7, Data5 = RED_8, Data6 = RED_9, 
