@@ -342,7 +342,9 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
         mutate(Region = as.factor(Region)) %>%
         mutate(No = as.factor(No)) %>% 
         mutate(Group = relevel(Group, ref = graphic_refference)) %>% 
-        dplyr::select(1, 2, 3, 69, 70, 71, 72, 73, 74, 75, 76, 77)
+        dplyr::select("No", "Group", "Region", 
+                      "Area_R", "Area_G", "Count_R", 
+                      "LI_R", "RI_R", "LI", "RI", "Area", "Count")
     }
     
     GatheringData_Ventral <- function(Data1, Data2, Data3, Data4, CountData1, CountData2, luminancedata1, luminancedata2){
@@ -644,79 +646,112 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
             axis.title.y = element_text(size = axis_title_size)) 
   }
   
+  PlotCount <- function(dataset, datajitter, purpose, titlename){
+    g <- ggplot(dataset, aes(x = Region, y = meanCount, fill = Group)) +
+      geom_bar(stat = 'identity', position = barplot_posision, 
+               width = barplot_width, colour = barplot_surrounding_color) + 
+      geom_errorbar(aes(ymin = meanCount - seCount,
+                        ymax = meanCount + seCount),
+                    width = errobar_width, position = position_dodge(barplot_width_all)) +
+      geom_jitter(data = datajitter, aes(x = Region, y = Count, color = Group),
+                  size = jitter_size_all, alpha = jitter_alpha, 
+                  fill = jitter_fill_color, shape = jitter_shape,
+                  position = position_jitterdodge(jitter.width = jitter_width_all, 
+                                                  jitter.height = jitter_height_all)) +
+      labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "& NeuN"^{"+"} ~ "/ NeuN"^{"+"} ~ "(# /" ~ mm^2 ~")"))) +
+      scale_y_continuous(expand = c(0, 0), limits = Countlimits, 
+                         breaks = Countbreaks) + 
+      scale_x_discrete(limits = Region_list) +
+      scale_color_manual(labels = c(SED = SED, LIE = LIE),
+                         values = c(SED = jitter_surrounding_color, 
+                                    LIE = jitter_surrounding_color)) +
+      scale_fill_manual(labels = c(SED = SED, LIE = LIE),
+                        values = c(SED = color_SED, LIE = color_LIE))
+  }
+  PlotArea <- function(dataset, datajitter, purpose, titlename){
+    g <- ggplot(dataset, aes(x = Region, y = meanArea, fill = Group)) +
+      geom_bar(stat = 'identity', position = barplot_posision, 
+               width = barplot_width, colour = barplot_surrounding_color) + 
+      geom_errorbar(aes(ymin = meanArea - seArea,
+                        ymax = meanArea + seArea),
+                    width = errobar_width, position = position_dodge(barplot_width_all)) +
+      geom_jitter(data = datajitter, aes(x = Region, y = Area, color = Group),
+                  size = jitter_size_all, alpha = jitter_alpha, 
+                  fill = jitter_fill_color, shape = jitter_shape,
+                  position = position_jitterdodge(jitter.width = jitter_width_all, 
+                                                  jitter.height = jitter_height_all)) +
+      labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "area (% NeuN"^{"+"}")"))) +
+      scale_y_continuous(expand = c(0, 0), limits = Arealimits, 
+                         breaks = Areabreaks) +
+      scale_x_discrete(limits = Region_list) +
+      scale_color_manual(labels = c(SED = SED, LIE = LIE),
+                         values = c(SED = jitter_surrounding_color, 
+                                    LIE = jitter_surrounding_color)) +
+      scale_fill_manual(labels = c(SED = SED, LIE = LIE),
+                        values = c(SED = color_SED, LIE = color_LIE))
+  }
+  PlotLuminance <- function(dataset, datajitter, purpose, titlename){
+    g <- ggplot(dataset, aes(x = Region, y = meanLI, fill = Group)) +
+      geom_bar(stat = 'identity', position = barplot_posision, 
+               width = barplot_width, colour = barplot_surrounding_color) + 
+      geom_errorbar(aes(ymin = meanLI - seLI,
+                        ymax = meanLI + seLI),
+                    width = errobar_width, position = position_dodge(barplot_width_all)) +
+      geom_jitter(data = datajitter, aes(x = Region, y = LI, color = Group),
+                  size = jitter_size_all, alpha = jitter_alpha, 
+                  fill = jitter_fill_color, shape = jitter_shape,
+                  position = position_jitterdodge(jitter.width = jitter_width_all, 
+                                                  jitter.height = jitter_height_all)) +
+      labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "Luminance\n(Region average)"))) +
+      scale_y_continuous(expand = c(0, 0), limits = Luminancelimits, 
+                         breaks = Luminancebreaks) +
+      scale_x_discrete(limits = Region_list) +
+      scale_color_manual(labels = c(SED = SED, LIE = LIE),
+                         values = c(SED = jitter_surrounding_color, 
+                                    LIE = jitter_surrounding_color)) +
+      scale_fill_manual(labels = c(SED = SED, LIE = LIE),
+                        values = c(SED = color_SED, LIE = color_LIE))
+  }
+  PlotRed_intensity <- function(dataset, datajitter, purpose, titlename){
+    g <- ggplot(dataset, aes(x = Region, y = meanRI, fill = Group)) +
+      geom_bar(stat = 'identity', position = barplot_posision, 
+               width = barplot_width, colour = barplot_surrounding_color) + 
+      geom_errorbar(aes(ymin = meanRI - seRI,
+                        ymax = meanRI + seRI),
+                    width = errobar_width, position = position_dodge(barplot_width_all)) +
+      geom_jitter(data = datajitter, aes(x = Region, y = RI, color = Group),
+                  size = jitter_size_all, alpha = jitter_alpha, 
+                  fill = jitter_fill_color, shape = jitter_shape,
+                  position = position_jitterdodge(jitter.width = jitter_width_all, 
+                                                  jitter.height = jitter_height_all)) +
+      labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "intensity (Region average)"))) +
+      scale_y_continuous(expand = c(0, 0), limits = REDintensitylimits, 
+                         breaks = REDintensitybreaks) +
+      scale_x_discrete(limits = Region_list) +
+      scale_color_manual(labels = c(SED = SED, LIE = LIE),
+                         values = c(SED = jitter_surrounding_color, 
+                                    LIE = jitter_surrounding_color)) +
+      scale_fill_manual(labels = c(SED = SED, LIE = LIE),
+                        values = c(SED = color_SED, LIE = color_LIE))
+  }
+  
   Barplot <- function(dataset, datajitter, purpose, region, titlename){
     if(purpose == Count){
-      g <- ggplot(dataset, aes(x = Group, y = meanCount, fill = Group)) +
-        geom_bar(stat = 'identity', position = barplot_posision,
-                 width = barplot_width, colour = barplot_surrounding_color) + 
-        geom_errorbar(aes(ymin = meanCount - seCount,
-                          ymax = meanCount + seCount),
-                      width = errobar_width) +
-        geom_jitter(data = datajitter, aes(x = Group, y = Count),
-                    height = jitter_height, width = jitter_width, 
-                    size = jitter_size, alpha = jitter_alpha,
-                    fill = jitter_fill_color, color = jitter_surrounding_color, 
-                    shape = jitter_shape) +
-        labs(title = titlename, y = expression(paste("c-Fos+ / NeuN+ (cell / ", {mm^2},")"))) +
-        scale_y_continuous(expand = c(0, 0), limits = Countlimits, breaks = Countbreaks) + 
-        scale_fill_manual(values = c(SED = color_SED, LIE = color_LIE, 
-                                     MOE = color_MOE, NCS = color_NCS)) +
-        theme_bar()
+      PlotCount(dataset, datajitter, purpose, titlename)
+      g <- g + theme_bar()
     }
     else if(purpose == Area){
-      g <- ggplot(dataset, aes(x = Group, y = meanArea, fill = Group)) +
-        geom_bar(stat = 'identity', position = barplot_posision, 
-                 width = barplot_width, colour = barplot_surrounding_color) + 
-        geom_errorbar(aes(ymin = meanArea - seArea,
-                          ymax = meanArea + seArea),
-                      width = errobar_width) +
-        geom_jitter(data = datajitter, aes(x = Group, y = Area),
-                    height = jitter_height, width = jitter_width, 
-                    size = jitter_size, alpha = jitter_alpha,
-                    fill = jitter_fill_color, color = jitter_surrounding_color, 
-                    shape = jitter_shape) +
-        labs(title = titlename, y = "c-Fos+ area (% NeuN+)") +
-        scale_y_continuous(expand = c(0, 0), limits = Arealimits, breaks = Areabreaks) + 
-        scale_fill_manual(values = c(SED = color_SED, LIE = color_LIE, 
-                                     MOE = color_MOE, NCS = color_NCS)) +
-        theme_bar()
+      PlotArea(dataset, datajitter, purpose, titlename) 
+      g <- g + theme_bar()
     }
     else if(purpose == Luminance){
-      g <- ggplot(dataset, aes(x = Group, y = meanLI, fill = Group)) +
-        geom_bar(stat = 'identity', position = barplot_posision, 
-                 width = barplot_width, colour = barplot_surrounding_color) + 
-        geom_errorbar(aes(ymin = meanLI - seLI,
-                          ymax = meanLI + seLI),
-                      width = errobar_width) +
-        geom_jitter(data = datajitter, aes(x = Group, y = LI),
-                    height = jitter_height, width = jitter_width, 
-                    size = jitter_size, alpha = jitter_alpha,
-                    fill = jitter_fill_color, color = jitter_surrounding_color, 
-                    shape = jitter_shape) +
-        labs(title = titlename, y = "c-Fos+ Luminance\n(Region average)") +
-        scale_y_continuous(expand = c(0, 0), limits = Luminancelimits, breaks = Luminancebreaks) +
-        scale_fill_manual(values = c(SED = color_SED, LIE = color_LIE, 
-                                     MOE = color_MOE, NCS = color_NCS)) +
-        theme_bar()
+      PlotLuminance(dataset, datajitter, purpose, titlename)
+      g <- g + theme_bar()
     }
     else if(purpose == Red_intensity){
-      g <- ggplot(dataset, aes(x = Group, y = meanRI, fill = Group)) +
-        geom_bar(stat = 'identity', position = barplot_posision, 
-                 width = barplot_width, colour = barplot_surrounding_color) + 
-        geom_errorbar(aes(ymin = meanRI - seRI,
-                          ymax = meanRI + seRI),
-                      width = errobar_width) +
-        geom_jitter(data = datajitter, aes(x = Group, y = RI),
-                    height = jitter_height, width = jitter_width, 
-                    size = jitter_size, alpha = jitter_alpha,
-                    fill = jitter_fill_color, color = jitter_surrounding_color, 
-                    shape = jitter_shape) +
-        labs(title = titlename, y = "c-Fos+ intensity (Region average)") +
-        scale_y_continuous(expand = c(0, 0), limits = REDintensitylimits, 
-                           breaks = REDintensitybreaks) +
-        scale_fill_manual(values = c(SED = color_SED, LIE = color_LIE, 
-                                     MOE = color_MOE, NCS = color_NCS)) +
-        theme_bar()}
+      PlotRed_intensity(dataset, datajitter, purpose, titlename)
+      g <- g + theme_bar()
+      }
     plot(g)
     
     assign(paste0("Plot_", region, "_", purpose), g, envir = .GlobalEnv)
@@ -734,95 +769,23 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
   }
   BarplotAll <- function(dataset, datajitter, purpose, titlename){
     if(purpose == Count){
-      g <- ggplot(dataset, aes(x = Region, y = meanCount, fill = Group)) +
-        geom_bar(stat = 'identity', position = barplot_posision, 
-                 width = barplot_width, colour = barplot_surrounding_color) + 
-        geom_errorbar(aes(ymin = meanCount - seCount,
-                          ymax = meanCount + seCount),
-                      width = errobar_width, position = position_dodge(barplot_width_all)) +
-        geom_jitter(data = datajitter, aes(x = Region, y = Count, color = Group),
-                    size = jitter_size_all, alpha = jitter_alpha, 
-                    fill = jitter_fill_color, shape = jitter_shape,
-                    position = position_jitterdodge(jitter.width = jitter_width_all, 
-                                                    jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = expression(paste("c-Fos+ / NeuN+ (cell / ", {mm^2},")"))) +
-        scale_y_continuous(expand = c(0, 0), limits = Countlimits, 
-                           breaks = Countbreaks) + 
-        scale_x_discrete(limits = Region_list) +
-        scale_color_manual(labels = c(SED = SED, LIE = LIE),
-                           values = c(SED = jitter_surrounding_color, 
-                                      LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
-                          values = c(SED = color_SED, LIE = color_LIE)) +
+      PlotCount(dataset, datajitter, purpose, titlename)
+      g <- g +
         theme_bar_all()
     }
     else if(purpose == Area){
-      g <- ggplot(dataset, aes(x = Region, y = meanArea, fill = Group)) +
-        geom_bar(stat = 'identity', position = barplot_posision, 
-                 width = barplot_width, colour = barplot_surrounding_color) + 
-        geom_errorbar(aes(ymin = meanArea - seArea,
-                          ymax = meanArea + seArea),
-                      width = errobar_width, position = position_dodge(barplot_width_all)) +
-        geom_jitter(data = datajitter, aes(x = Region, y = Area, color = Group),
-                    size = jitter_size_all, alpha = jitter_alpha, 
-                    fill = jitter_fill_color, shape = jitter_shape,
-                    position = position_jitterdodge(jitter.width = jitter_width_all, 
-                                                    jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = "c-Fos+ area (% NeuN+)") +
-        scale_y_continuous(expand = c(0, 0), limits = Arealimits, 
-                           breaks = Areabreaks) +
-        scale_x_discrete(limits = Region_list) +
-        scale_color_manual(labels = c(SED = SED, LIE = LIE),
-                           values = c(SED = jitter_surrounding_color, 
-                                      LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
-                          values = c(SED = color_SED, LIE = color_LIE)) +
+      PlotArea(dataset, datajitter, purpose, titlename)
+      g <- g +
         theme_bar_all()
     }
     else if(purpose == Luminance){
-      g <- ggplot(dataset, aes(x = Region, y = meanLI, fill = Group)) +
-        geom_bar(stat = 'identity', position = barplot_posision, 
-                 width = barplot_width, colour = barplot_surrounding_color) + 
-        geom_errorbar(aes(ymin = meanLI - seLI,
-                          ymax = meanLI + seLI),
-                      width = errobar_width, position = position_dodge(barplot_width_all)) +
-        geom_jitter(data = datajitter, aes(x = Region, y = LI, color = Group),
-                    size = jitter_size_all, alpha = jitter_alpha, 
-                    fill = jitter_fill_color, shape = jitter_shape,
-                    position = position_jitterdodge(jitter.width = jitter_width_all, 
-                                                    jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = "c-Fos+ Luminance\n(Region average)") +
-        scale_y_continuous(expand = c(0, 0), limits = Luminancelimits, 
-                           breaks = Luminancebreaks) +
-        scale_x_discrete(limits = Region_list) +
-        scale_color_manual(labels = c(SED = SED, LIE = LIE),
-                           values = c(SED = jitter_surrounding_color, 
-                                      LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
-                          values = c(SED = color_SED, LIE = color_LIE)) +
+      PlotLuminance(dataset, datajitter, purpose, titlename)
+      g <- g +
         theme_bar_all()
     }
     else if(purpose == Red_intensity){
-      g <- ggplot(dataset, aes(x = Region, y = meanRI, fill = Group)) +
-        geom_bar(stat = 'identity', position = barplot_posision, 
-                 width = barplot_width, colour = barplot_surrounding_color) + 
-        geom_errorbar(aes(ymin = meanRI - seRI,
-                          ymax = meanRI + seRI),
-                      width = errobar_width, position = position_dodge(barplot_width_all)) +
-        geom_jitter(data = datajitter, aes(x = Region, y = RI, color = Group),
-                    size = jitter_size_all, alpha = jitter_alpha, 
-                    fill = jitter_fill_color, shape = jitter_shape,
-                    position = position_jitterdodge(jitter.width = jitter_width_all, 
-                                                    jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = "c-Fos+ intensity (Region average)") +
-        scale_y_continuous(expand = c(0, 0), limits = REDintensitylimits, 
-                           breaks = REDintensitybreaks) +
-        scale_x_discrete(limits = Region_list) +
-        scale_color_manual(labels = c(SED = SED, LIE = LIE),
-                           values = c(SED = jitter_surrounding_color, 
-                                      LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
-                          values = c(SED = color_SED, LIE = color_LIE)) +
+      PlotRed_intensity(dataset, datajitter, purpose, titlename)
+      g <- g +
         theme_bar_all()
     }
     plot(g)
@@ -842,91 +805,23 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
   }
   BarplotD_V <- function(dataset, datajitter, purpose, titlename){
     if(purpose == Count){
-      g <- ggplot(dataset, aes(x = D_V, y = meanCount, fill = Group)) +
-        geom_bar(stat = 'identity', position = barplot_posision, 
-                 width = barplot_width, colour = barplot_surrounding_color) + 
-        geom_errorbar(aes(ymin = meanCount - seCount,
-                          ymax = meanCount + seCount),
-                      width = errobar_width, position = position_dodge(barplot_width_all)) +
-        geom_jitter(data = datajitter, aes(x = D_V, y = mCount, color = Group),
-                    size = jitter_size_all, alpha = jitter_alpha, 
-                    fill = jitter_fill_color, shape = jitter_shape,
-                    position = position_jitterdodge(jitter.width = jitter_width_all, 
-                                                    jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = expression(paste("c-Fos+ / NeuN+ (cell / ", {mm^2},")"))) +
-        scale_y_continuous(expand = c(0, 0), limits = Countlimits, 
-                           breaks = Countbreaks) + 
-        scale_color_manual(labels = c(SED = SED, LIE = LIE),
-                           values = c(SED = jitter_surrounding_color, 
-                                      LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
-                          values = c(SED = color_SED, LIE = color_LIE)) +
+      PlotCount(dataset, datajitter, purpose, titlename)
+      g <- g +
         theme_bar_DV()
     }
     else if(purpose == Area){
-      g <- ggplot(dataset, aes(x = D_V, y = meanArea, fill = Group)) +
-        geom_bar(stat = 'identity', position = barplot_posision, 
-                 width = barplot_width, colour = barplot_surrounding_color) + 
-        geom_errorbar(aes(ymin = meanArea - seArea,
-                          ymax = meanArea + seArea),
-                      width = errobar_width, position = position_dodge(barplot_width_all)) +
-        geom_jitter(data = datajitter, aes(x = D_V, y = mArea, color = Group),
-                    size = jitter_size_all, alpha = jitter_alpha, 
-                    fill = jitter_fill_color, shape = jitter_shape,
-                    position = position_jitterdodge(jitter.width = jitter_width_all, 
-                                                    jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = "c-Fos+ area (% NeuN+)") +
-        scale_y_continuous(expand = c(0, 0), limits = Arealimits, 
-                           breaks = Areabreaks) +
-        scale_color_manual(labels = c(SED = SED, LIE = LIE),
-                           values = c(SED = jitter_surrounding_color, 
-                                      LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
-                          values = c(SED = color_SED, LIE = color_LIE)) +
+      PlotArea(dataset, datajitter, purpose, titlename)
+      g <- g +
         theme_bar_DV()
     }
     else if(purpose == Luminance){
-      g <- ggplot(dataset, aes(x = D_V, y = meanLI, fill = Group)) +
-        geom_bar(stat = 'identity', position = barplot_posision,
-                 width = barplot_width, colour = barplot_surrounding_color) + 
-        geom_errorbar(aes(ymin = meanLI - seLI,
-                          ymax = meanLI + seLI),
-                      width = errobar_width, position = position_dodge(barplot_width_all)) +
-        geom_jitter(data = datajitter, aes(x = D_V, y = mLI, color = Group),
-                    size = jitter_size_all, alpha = jitter_alpha, 
-                    fill = jitter_fill_color, shape = jitter_shape,
-                    position = position_jitterdodge(jitter.width = jitter_width_all, 
-                                                    jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = "c-Fos+ Luminance\n(Region average)") +
-        scale_y_continuous(expand = c(0, 0), limits = Luminancelimits, 
-                           breaks = Luminancebreaks) +
-        scale_color_manual(labels = c(SED = SED, LIE = LIE),
-                           values = c(SED = jitter_surrounding_color, 
-                                      LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
-                          values = c(SED = color_SED, LIE = color_LIE)) +
+      PlotLuminance(dataset, datajitter, purpose, titlename)
+      g <- g +
         theme_bar_DV()
     }
     else if(purpose == Red_intensity){
-      g <- ggplot(dataset, aes(x = D_V, y = meanRI, fill = Group)) +
-        geom_bar(stat = 'identity', position = barplot_posision, 
-                 width = barplot_width, colour = barplot_surrounding_color) + 
-        geom_errorbar(aes(ymin = meanRI - seRI,
-                          ymax = meanRI + seRI),
-                      width = errobar_width, position = position_dodge(barplot_width_all)) +
-        geom_jitter(data = datajitter, aes(x = D_V, y = mRI, color = Group),
-                    size = jitter_size_all, alpha = jitter_alpha, 
-                    fill = jitter_fill_color, shape = jitter_shape,
-                    position = position_jitterdodge(jitter.width = jitter_width_all, 
-                                                    jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = "c-Fos+ intensity (Region average)") +
-        scale_y_continuous(expand = c(0, 0), limits = REDintensitylimits, 
-                           breaks = REDintensitybreaks) +
-        scale_color_manual(labels = c(SED = SED, LIE = LIE),
-                           values = c(SED = jitter_surrounding_color, 
-                                      LIE = jitter_surrounding_color)) +
-        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
-                          values = c(SED = color_SED, LIE = color_LIE)) +
+      PlotRed_intensity(dataset, datajitter, purpose, titlename)
+      g <- g +
         theme_bar_DV()
     }
     plot(g)
@@ -951,7 +846,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                geom_bar(stat = 'identity', position = barplot_posision,
                         width = barplot_width, colour = barplot_surrounding_color) + 
                labs(title = paste0(gsub("_1_R", "", dataset$No)," ", titlename), 
-                    y = expression(paste("c-Fos+ / NeuN+ (cell / ", {mm^2},")")))+
+                    y = bquote(paste("c-Fos"^{"+"} ~ "& NeuN"^{"+"} ~ "/ NeuN"^{"+"} ~ "(# /" ~ mm^2 ~")")))+
                scale_y_continuous(expand = c(0, 0), limits = Countlimits, 
                                   breaks = Countbreaks) +
                scale_x_discrete(limits = Region_list) +
@@ -967,7 +862,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                geom_bar(stat = 'identity', position = barplot_posision, 
                         width = barplot_width, colour = barplot_surrounding_color) + 
                labs(title = paste0(gsub("_1_R", "", dataset$No)," ", titlename), 
-                    y = "c-Fos+ area (% NeuN+)") +
+                    y = bquote(paste("c-Fos"^{"+"} ~ "area (% NeuN"^{"+"}")"))) +
                scale_y_continuous(expand = c(0, 0), limits = Arealimits, 
                                   breaks = Areabreaks) +
                scale_x_discrete(limits = Region_list) +
@@ -982,7 +877,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                geom_bar(stat = 'identity', position = barplot_posision, 
                         width = barplot_width, colour = barplot_surrounding_color) + 
                labs(title = paste0(gsub("_1_R", "", dataset$No)," ", titlename), 
-                    y = "c-Fos+ Luminance\n(Region average)") +
+                    y = bquote(paste("c-Fos"^{"+"} ~ "Luminance\n(Region average)"))) +
                scale_y_continuous(expand = c(0, 0), limits = Luminancelimits, 
                                   breaks = Luminancebreaks) +
                scale_x_discrete(limits = Region_list) +
@@ -997,7 +892,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                geom_bar(stat = 'identity', position = barplot_posision, 
                         width = barplot_width, colour = barplot_surrounding_color) + 
                labs(title = paste0(gsub("_1_R", "", dataset$No)," ", 
-                                   titlename), y = "c-Fos+ intensity (Region average)") +
+                                   titlename), y = bquote(paste("c-Fos"^{"+"} ~ "intensity (Region average)"))) +
                scale_y_continuous(expand = c(0, 0), limits = REDintensitylimits, 
                                   breaks = REDintensitybreaks) +
                scale_x_discrete(limits = Region_list) +
