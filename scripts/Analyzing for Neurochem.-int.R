@@ -428,7 +428,7 @@ source("scripts/IHC_cFos.txt")
             axis.text.y = element_text(size = 10),
             axis.title = element_text(size = 8))
     mod_PlotdCA3
-    ggsave("c-Fos/ScatterResults/Mod_dCA3_Ex1.png", width = 4, height = 3, dpi = 300)
+    ggsave("c-Fos/Mod_dCA3_Ex1.png", width = 4, height = 3, dpi = 300)
     
     # Analyse ==========================================
     sink("c-Fos/Immunohistochemistry_Analyse.txt", split = T)
