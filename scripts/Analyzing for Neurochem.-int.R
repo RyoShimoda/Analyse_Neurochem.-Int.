@@ -10,7 +10,7 @@ setwd("Analyse_Neurochem_int")
 # My Function & ANOVAKUN----
 source("scripts/AUTOGRAPH.txt")
 source("scripts/anovakun_489.txt")
-source("scripts/IHC_cFos.txt")
+source("scripts/MF_IHC.txt")
 
 
 # Contextual Fear Conditioning ----
@@ -173,12 +173,12 @@ source("scripts/IHC_cFos.txt")
     RegionListAll <- c("PL", "IL", "dDGsp", "dDGip", "dCA3", "dCA2", "dCA1", "vDGsp", "vDGip", "vCA3", "vCA1")
     
     # Use My Function----
-    mf_IHC_cFos(Folder_name = "c-Fos\\Hippocampus",
+    mf_IHC(Folder_name = "c-Fos\\Hippocampus",
                 Path = ".\\c-Fos\\Hippocampus\\Analyse_G50_R20",
                 Region_list = RegionList, Red_name = "c-Fos", Green_name = "NeuN", 
                 Result_folder = "Result_Analyse_G50_R20")
     
-    mf_IHC_cFos(Folder_name = "c-Fos\\PL_IL",
+    mf_IHC(Folder_name = "c-Fos\\PL_IL",
                 Path = ".\\c-Fos\\PL_IL\\G40_R20",
                 Region_list = PFCList, 
                 Red_name = "c-Fos", Green_name = "NeuN", PFC = "", 
