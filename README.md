@@ -9,11 +9,11 @@ This repository contains the R code and related materials for the data analysis 
 ---
 
 ## Reproducibility & Output Notes
-# Code Origin & Figures:
+### Code Origin & Figures:
 The R scripts in this repository are the original codes used by the author during the analysis phase. While the underlying data and statistical results are identical to the published paper, the exact plotting scripts may differ from those used by the co-author who generated the final figures for the manuscript.
-# Automatic Directory & Extra Outputs:
+### Automatic Directory & Extra Outputs:
 Upon running the scripts, the required output directories (e.g., /Individual_data) will be automatically created within your working directory.
-# Exploratory Files:
+### Exploratory Files:
 Please note that the generated folders will contain more files and plots than those explicitly presented in the paper. These include intermediate data, preliminary visualizations, and exploratory analyses performed during the research process.
 
 ## Repository Structure
