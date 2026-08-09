@@ -649,7 +649,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
   Barplot <- function(dataset, datajitter, purpose, region, titlename){
     if(purpose == Count){
       g <- ggplot(dataset, aes(x = Group, y = meanCount, fill = Group)) +
-        geom_bar(stat = 'identity', position = barplot_posision, 
+        geom_bar(stat = 'identity', position = barplot_posision,
                  width = barplot_width, colour = barplot_surrounding_color) + 
         geom_errorbar(aes(ymin = meanCount - seCount,
                           ymax = meanCount + seCount),
@@ -660,11 +660,9 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                     fill = jitter_fill_color, color = jitter_surrounding_color, 
                     shape = jitter_shape) +
         labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "& NeuN"^{"+"} ~ "/ NeuN"^{"+"} ~ "(# /" ~ mm^2 ~")"))) +
-        scale_y_continuous(expand = c(0, 0), limits = Countlimits, 
-                           breaks = Countbreaks) + 
-        scale_x_discrete(limits = Region_list) +
-        scale_fill_manual(labels = c(SED = SED, LIE = LIE),
-                          values = c(SED = color_SED, LIE = color_LIE)) + 
+        scale_y_continuous(expand = c(0, 0), limits = Countlimits, breaks = Countbreaks) + 
+        scale_fill_manual(values = c(SED = color_SED, LIE = color_LIE, 
+                                     MOE = color_MOE, NCS = color_NCS)) +
         theme_bar()
     }
     else if(purpose == Area){
@@ -679,7 +677,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                     size = jitter_size, alpha = jitter_alpha,
                     fill = jitter_fill_color, color = jitter_surrounding_color, 
                     shape = jitter_shape) +
-        labs(title = titlename, y = "c-Fos+ area (% NeuN+)") +
+        labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "area (% NeuN"^{"+"} ~ ")"))) +
         scale_y_continuous(expand = c(0, 0), limits = Arealimits, breaks = Areabreaks) + 
         scale_fill_manual(values = c(SED = color_SED, LIE = color_LIE, 
                                      MOE = color_MOE, NCS = color_NCS)) +
@@ -697,7 +695,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                     size = jitter_size, alpha = jitter_alpha,
                     fill = jitter_fill_color, color = jitter_surrounding_color, 
                     shape = jitter_shape) +
-        labs(title = titlename, y = "c-Fos+ Luminance\n(Region average)") +
+        labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "Luminance\n(Region average)"))) +
         scale_y_continuous(expand = c(0, 0), limits = Luminancelimits, breaks = Luminancebreaks) +
         scale_fill_manual(values = c(SED = color_SED, LIE = color_LIE, 
                                      MOE = color_MOE, NCS = color_NCS)) +
@@ -715,7 +713,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                     size = jitter_size, alpha = jitter_alpha,
                     fill = jitter_fill_color, color = jitter_surrounding_color, 
                     shape = jitter_shape) +
-        labs(title = titlename, y = "c-Fos+ intensity (Region average)") +
+        labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "intensity\n(Region average)"))) +
         scale_y_continuous(expand = c(0, 0), limits = REDintensitylimits, 
                            breaks = REDintensitybreaks) +
         scale_fill_manual(values = c(SED = color_SED, LIE = color_LIE, 
@@ -749,7 +747,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                     fill = jitter_fill_color, shape = jitter_shape,
                     position = position_jitterdodge(jitter.width = jitter_width_all, 
                                                     jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = expression(paste("c-Fos+ / NeuN+ (cell / ", {mm^2},  ")"))) +
+        labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "& NeuN"^{"+"} ~ "/ NeuN"^{"+"} ~ "(# /" ~ mm^2 ~")"))) +
         scale_y_continuous(expand = c(0, 0), limits = Countlimits, 
                            breaks = Countbreaks) + 
         scale_x_discrete(limits = Region_list) +
@@ -772,7 +770,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                     fill = jitter_fill_color, shape = jitter_shape,
                     position = position_jitterdodge(jitter.width = jitter_width_all, 
                                                     jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = "c-Fos+ area (% NeuN+)") +
+        labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "area (% NeuN"^{"+"} ~ ")"))) +
         scale_y_continuous(expand = c(0, 0), limits = Arealimits, 
                            breaks = Areabreaks) +
         scale_x_discrete(limits = Region_list) +
@@ -795,7 +793,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                     fill = jitter_fill_color, shape = jitter_shape,
                     position = position_jitterdodge(jitter.width = jitter_width_all, 
                                                     jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = "c-Fos+ Luminance\n(Region average)") +
+        labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "Luminance\n(Region average)"))) +
         scale_y_continuous(expand = c(0, 0), limits = Luminancelimits, 
                            breaks = Luminancebreaks) +
         scale_x_discrete(limits = Region_list) +
@@ -818,7 +816,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                     fill = jitter_fill_color, shape = jitter_shape,
                     position = position_jitterdodge(jitter.width = jitter_width_all, 
                                                     jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = "c-Fos+ intensity (Region average)") +
+        labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "intensity\n(Region average)"))) +
         scale_y_continuous(expand = c(0, 0), limits = REDintensitylimits, 
                            breaks = REDintensitybreaks) +
         scale_x_discrete(limits = Region_list) +
@@ -857,7 +855,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                     fill = jitter_fill_color, shape = jitter_shape,
                     position = position_jitterdodge(jitter.width = jitter_width_all, 
                                                     jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = expression(paste("c-Fos+ / NeuN+ (cell / ", {mm^2},")"))) +
+        labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "& NeuN"^{"+"} ~ "/ NeuN"^{"+"} ~ "(# /" ~ mm^2 ~")"))) +
         scale_y_continuous(expand = c(0, 0), limits = Countlimits, 
                            breaks = Countbreaks) + 
         scale_color_manual(labels = c(SED = SED, LIE = LIE),
@@ -879,7 +877,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                     fill = jitter_fill_color, shape = jitter_shape,
                     position = position_jitterdodge(jitter.width = jitter_width_all, 
                                                     jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = "c-Fos+ area (% NeuN+)") +
+        labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "area (% NeuN"^{"+"} ~ ")"))) +
         scale_y_continuous(expand = c(0, 0), limits = Arealimits, 
                            breaks = Areabreaks) +
         scale_color_manual(labels = c(SED = SED, LIE = LIE),
@@ -901,7 +899,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                     fill = jitter_fill_color, shape = jitter_shape,
                     position = position_jitterdodge(jitter.width = jitter_width_all, 
                                                     jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = "c-Fos+ Luminance\n(Region average)") +
+        labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "Luminance\n(Region average)"))) +
         scale_y_continuous(expand = c(0, 0), limits = Luminancelimits, 
                            breaks = Luminancebreaks) +
         scale_color_manual(labels = c(SED = SED, LIE = LIE),
@@ -923,7 +921,7 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
                     fill = jitter_fill_color, shape = jitter_shape,
                     position = position_jitterdodge(jitter.width = jitter_width_all, 
                                                     jitter.height = jitter_height_all)) +
-        labs(title = titlename, y = "c-Fos+ intensity (Region average)") +
+        labs(title = titlename, y = bquote(paste("c-Fos"^{"+"} ~ "intensity\n(Region average)"))) +
         scale_y_continuous(expand = c(0, 0), limits = REDintensitylimits, 
                            breaks = REDintensitybreaks) +
         scale_color_manual(labels = c(SED = SED, LIE = LIE),
@@ -1000,8 +998,8 @@ mf_IHC_cFos <- function(Folder_name = "", Path, File_type = "csv",
              ggplot(dataset, aes(x = Region, y = RI, fill = Group)) +
                geom_bar(stat = 'identity', position = barplot_posision, 
                         width = barplot_width, colour = barplot_surrounding_color) + 
-               labs(title = paste0(gsub("_1_R", "", dataset$No)," ", 
-                                   titlename), y = bquote(paste("c-Fos"^{"+"} ~ "intensity (Region average)"))) +
+               labs(title = paste0(gsub("_1_R", "", dataset$No)," ", titlename), 
+                    y = bquote(paste("c-Fos"^{"+"} ~ "intensity\n(Region average)"))) +
                scale_y_continuous(expand = c(0, 0), limits = REDintensitylimits, 
                                   breaks = REDintensitybreaks) +
                scale_x_discrete(limits = Region_list) +
