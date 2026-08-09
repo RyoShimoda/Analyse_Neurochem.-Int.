@@ -1,0 +1,150 @@
+
+== Body Weight ==
+
+-- Shapiro-Wilk Test --
+
+	Shapiro-Wilk normality test
+
+data:  anomuscle$Body_weight
+W = 0.98049, p-value = 0.9673
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1  0.4452 0.5155
+      14               
+
+-- unpaired t test --
+
+	Two Sample t-test
+
+data:  anomuscle$Body_weight by anomuscle$Group
+t = -3.0568, df = 14, p-value = 0.008534
+alternative hypothesis: true difference in means between group LIE and group SED is not equal to 0
+95 percent confidence interval:
+ -20.419678  -3.580322
+sample estimates:
+mean in group LIE mean in group SED 
+           346.25            358.25 
+
+
+== Soleus ==
+
+-- Shapiro-Wilk Test --
+
+	Shapiro-Wilk normality test
+
+data:  anomuscle$Soleus
+W = 0.91661, p-value = 0.1488
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1  2.2431 0.1564
+      14               
+
+-- unpaired t test --
+
+	Two Sample t-test
+
+data:  anomuscle$Soleus by anomuscle$Group
+t = 3.0619, df = 14, p-value = 0.008448
+alternative hypothesis: true difference in means between group LIE and group SED is not equal to 0
+95 percent confidence interval:
+ 1.198980 6.806809
+sample estimates:
+mean in group LIE mean in group SED 
+         42.04873          38.04584 
+
+
+== Plantaris ==
+
+-- Shapiro-Wilk Test --
+
+	Shapiro-Wilk normality test
+
+data:  anomuscle$Plantaris
+W = 0.98038, p-value = 0.9665
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1  0.6067  0.449
+      14               
+
+== unpaired t test ==
+
+	Two Sample t-test
+
+data:  anomuscle$Plantaris by anomuscle$Group
+t = 2.2897, df = 14, p-value = 0.03809
+alternative hypothesis: true difference in means between group LIE and group SED is not equal to 0
+95 percent confidence interval:
+ 0.2750166 8.4169241
+sample estimates:
+mean in group LIE mean in group SED 
+         93.14883          88.80286 
+
+
+== Adrenal ==
+
+-- Shapiro-Wilk Test --
+
+	Shapiro-Wilk normality test
+
+data:  anomuscle$Adrenal
+W = 0.93519, p-value = 0.2942
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1  0.1596 0.6955
+      14               
+
+ ===== unpaired t test ===== 
+
+	Two Sample t-test
+
+data:  anomuscle$Adrenal by anomuscle$Group
+t = 1.8481, df = 14, p-value = 0.08582
+alternative hypothesis: true difference in means between group LIE and group SED is not equal to 0
+95 percent confidence interval:
+ -0.2001791  2.6938111
+sample estimates:
+mean in group LIE mean in group SED 
+         14.56396          13.31714 
+
+
+== Thymus ==
+
+-- Shapiro-Wilk Test --
+
+	Shapiro-Wilk normality test
+
+data:  anomuscle$Thymus
+W = 0.95994, p-value = 0.6606
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1  0.0857  0.774
+      14               
+
+-- unpaired t test --
+
+	Two Sample t-test
+
+data:  anomuscle$Thymus by anomuscle$Group
+t = 0.43904, df = 14, p-value = 0.6673
+alternative hypothesis: true difference in means between group LIE and group SED is not equal to 0
+95 percent confidence interval:
+ -6.259478  9.481741
+sample estimates:
+mean in group LIE mean in group SED 
+         93.82194          92.21081 
+

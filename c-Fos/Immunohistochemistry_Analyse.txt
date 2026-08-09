@@ -1,0 +1,286 @@
+
+== PL ==
+
+-- Shapiro-Wilk Test --
+
+	Shapiro-Wilk normality test
+
+data:  cordata$PL
+W = 0.96892, p-value = 0.8208
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1   0.002 0.9651
+      14               
+
+-- unpaired t Test --
+
+	Two Sample t-test
+
+data:  cordata$PL by cordata$Group
+t = -0.68486, df = 14, p-value = 0.5046
+alternative hypothesis: true difference in means between group SED and group LIE is not equal to 0
+95 percent confidence interval:
+ -20993.14  10831.15
+sample estimates:
+mean in group SED mean in group LIE 
+         51960.69          57041.68 
+
+
+== IL ==
+
+-- Shapiro-Wilk Test --
+
+	Shapiro-Wilk normality test
+
+data:  cordata$IL
+W = 0.96671, p-value = 0.7829
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1  0.0224 0.8832
+      14               
+
+-- unpaired t Test --
+
+	Two Sample t-test
+
+data:  cordata$IL by cordata$Group
+t = -0.085012, df = 14, p-value = 0.9335
+alternative hypothesis: true difference in means between group SED and group LIE is not equal to 0
+95 percent confidence interval:
+ -6428.548  5938.365
+sample estimates:
+mean in group SED mean in group LIE 
+         32988.23          33233.32 
+
+
+== dDG ==
+
+-- Shapiro-Wilk Test --
+
+	Shapiro-Wilk normality test
+
+data:  cordata$dDG
+W = 0.8994, p-value = 0.07862
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1  0.6609 0.4299
+      14               
+
+-- unpaired t Test --
+
+	Two Sample t-test
+
+data:  cordata$dDG by cordata$Group
+t = 1.5649, df = 14, p-value = 0.1399
+alternative hypothesis: true difference in means between group SED and group LIE is not equal to 0
+95 percent confidence interval:
+ -376.9254 2411.5243
+sample estimates:
+mean in group SED mean in group LIE 
+         7686.820          6669.521 
+
+
+== vDG ==
+
+-- Shapiro-Wilk Test --
+
+	Shapiro-Wilk normality test
+
+data:  cordata$vDG
+W = 0.9606, p-value = 0.6726
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1   0.891 0.3612
+      14               
+
+-- unpaired t Test --
+
+	Two Sample t-test
+
+data:  cordata$vDG by cordata$Group
+t = 2.5925, df = 14, p-value = 0.02128
+alternative hypothesis: true difference in means between group SED and group LIE is not equal to 0
+95 percent confidence interval:
+  570.3246 6034.1089
+sample estimates:
+mean in group SED mean in group LIE 
+        12185.424          8883.208 
+
+
+== dCA3 ==
+
+-- Shapiro-Wilk Test --
+
+	Shapiro-Wilk normality test
+
+data:  cordata$dCA3
+W = 0.9369, p-value = 0.3127
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1   0.324 0.5782
+      14               
+
+-- unpaired t Test --
+
+	Two Sample t-test
+
+data:  cordata$dCA3 by cordata$Group
+t = 4.4818, df = 14, p-value = 0.0005169
+alternative hypothesis: true difference in means between group SED and group LIE is not equal to 0
+95 percent confidence interval:
+ 2336.943 6626.416
+sample estimates:
+mean in group SED mean in group LIE 
+        10936.435          6454.756 
+
+
+== dCA2 ==
+
+-- Shapiro-Wilk Test --
+
+	Shapiro-Wilk normality test
+
+data:  cordata$dCA2
+W = 0.98627, p-value = 0.9945
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1  3.0822  0.101
+      14               
+
+-- unpaired t Test --
+
+	Two Sample t-test
+
+data:  cordata$dCA2 by cordata$Group
+t = -0.58096, df = 14, p-value = 0.5705
+alternative hypothesis: true difference in means between group SED and group LIE is not equal to 0
+95 percent confidence interval:
+ -3735.736  2143.274
+sample estimates:
+mean in group SED mean in group LIE 
+         6082.436          6878.666 
+
+
+== dCA1 ==
+
+-- Shapiro-Wilk Test --
+
+	Shapiro-Wilk normality test
+
+data:  cordata$dCA1
+W = 0.93387, p-value = 0.2805
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1   0.721 0.4101
+      14               
+
+-- unpaired t Test --
+
+	Two Sample t-test
+
+data:  cordata$dCA1 by cordata$Group
+t = 1.6531, df = 14, p-value = 0.1205
+alternative hypothesis: true difference in means between group SED and group LIE is not equal to 0
+95 percent confidence interval:
+ -2017.223 15581.882
+sample estimates:
+mean in group SED mean in group LIE 
+         36242.27          29459.94 
+
+
+== vCA3 ==
+
+-- Shapiro-Wilk Test--
+
+	Shapiro-Wilk normality test
+
+data:  cordata$vCA3
+W = 0.98029, p-value = 0.9659
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1  0.5948 0.4534
+      14               
+
+-- unpaired t Test --
+
+	Two Sample t-test
+
+data:  cordata$vCA3 by cordata$Group
+t = 1.2018, df = 14, p-value = 0.2494
+alternative hypothesis: true difference in means between group SED and group LIE is not equal to 0
+95 percent confidence interval:
+ -641.8029 2277.6479
+sample estimates:
+mean in group SED mean in group LIE 
+         6069.432          5251.510 
+
+
+== vCA1 ==
+
+-- Shapiro-Wilk Test --
+
+	Shapiro-Wilk normality test
+
+data:  cordata$vCA1
+W = 0.948, p-value = 0.4587
+
+
+-- Levene's Test --
+Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(>F)
+group  1  2.1702 0.1628
+      14               
+
+-- unpaired t Test --
+
+	Two Sample t-test
+
+data:  cordata$vCA1 by cordata$Group
+t = 0.50277, df = 14, p-value = 0.6229
+alternative hypothesis: true difference in means between group SED and group LIE is not equal to 0
+95 percent confidence interval:
+ -4365.988  7039.636
+sample estimates:
+mean in group SED mean in group LIE 
+         22595.35          21258.53 
+
+
+== Correlation ==
+
+-- dCA3 & Freezing Time --
+
+	Pearson's product-moment correlation
+
+data:  cordata$dCA3 and cordata$Freezing
+t = 2.9052, df = 14, p-value = 0.01152
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.1689405 0.8504477
+sample estimates:
+      cor 
+0.6132863 
+
