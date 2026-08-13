@@ -22,8 +22,8 @@ source("scripts/MF_IHC.txt")
 
     mf_FC_annotation(folder_name = ".", 
                           graph = GFC_FC, 
-                          y_first_arrow = 25, y_second_arrow = 45, y_third_arrow3 = 65, 
-                          legend_posision_y = 65)
+                          y_first_arrow = 25, y_second_arrow = 45, y_third_arrow = 65, 
+                          legend_position_y = 65)
     
   # Statistical Analysis ----
     sink(file = "Results/ANOVA_FC.txt", split = T)
