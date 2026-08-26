@@ -260,14 +260,14 @@ source("scripts/MF_IHC.txt")
     sumHipp_DGcomb <- plotdata_DGcomb_d4 %>% 
       group_by(Group, Region) %>%
       summarise(meancFos = mean(cFos_st),
-                secFos = sd(cFos_st)/sqrt(n()-1)) %>%
+                secFos = sd(cFos_st)/sqrt(n())) %>%
       mutate(Group = as.factor(Group)) %>%
       mutate(Group = relevel(Group, ref = "SED"))
     
     sumPFC <- PFC %>% 
       group_by(Group, Region) %>% 
       summarise(meancFos = mean(cFos_st),
-                secFos = sd(cFos_st)/sqrt(n()-1)) %>% 
+                secFos = sd(cFos_st)/sqrt(n())) %>% 
       mutate(Group = as.factor(Group)) %>% 
       mutate(Group = relevel(Group, ref = "SED"))
     
